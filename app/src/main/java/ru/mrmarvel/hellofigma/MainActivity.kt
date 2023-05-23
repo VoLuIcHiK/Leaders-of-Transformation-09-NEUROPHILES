@@ -17,6 +17,7 @@
 package ru.mrmarvel.hellofigma
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -28,11 +29,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.mrmarvel.hellofigma.data.SharedViewModel
 import ru.mrmarvel.hellofigma.monitoringitembuildingnew.MonitoringItemBuildingNew
 import ru.mrmarvel.hellofigma.screens.CameraScreen
@@ -48,12 +52,14 @@ val elem = @Composable {
     )
 }
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val sharedViewModel: SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            val context = LocalContext.current
             HelloFigmaTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -69,7 +75,14 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable("camera_screen") {
-                            CameraScreen()
+                            TextView(context)
+                            CameraScreen(
+                                // navigateToMonitoringScreen = {
+                                //     navController.navigate("monitoring_screen", navOptions = NavOptions.Builder().)
+                                // }
+                            )
+                            val a = {
+                            }
                         }
                     }
                 }
