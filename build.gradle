@@ -18,6 +18,7 @@
 buildscript {
     ext {
         compose_version = '1.1.0-beta01'
+        nav_version = "2.5.3"
     }
 }
 

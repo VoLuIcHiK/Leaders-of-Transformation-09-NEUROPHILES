@@ -1,11 +1,11 @@
-package com.example.hellofigma.data
+package ru.mrmarvel.hellofigma.data
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
-import com.example.hellofigma.data.models.MonitoringBuildingGroup
-import com.example.hellofigma.data.models.MonitoringBuildingItem
-import com.example.hellofigma.screens.startingDate
+import ru.mrmarvel.hellofigma.data.models.MonitoringBuildingGroup
+import ru.mrmarvel.hellofigma.data.models.MonitoringBuildingItem
+import ru.mrmarvel.hellofigma.screens.startingDate
 import java.util.Calendar
 
 

@@ -1,4 +1,4 @@
-package com.example.hellofigma.screens
+package ru.mrmarvel.hellofigma.screens
 
 import android.widget.Toast
 import androidx.compose.animation.animateContentSize
@@ -18,18 +18,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.hellofigma.camoletappbar.CamoletAppBar
-import com.example.hellofigma.data.SharedViewModel
-import com.example.hellofigma.data.models.MonitoringBuildingGroup
-import com.example.hellofigma.data.models.MonitoringBuildingItem
-import com.example.hellofigma.makevideo.MakeVideo
-import com.example.hellofigma.monitoringitembuildingnew.MonitoringItemBuildingNew
-import com.example.hellofigma.monitoringitembuildingnew.Open
-import com.example.hellofigma.monitoringitembuildingsubitem.MonitoringItemBuildingSubItem
-import com.example.hellofigma.monthmonitoringlabel.MonthLabel
 import com.google.accompanist.flowlayout.FlowColumn
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
+import ru.mrmarvel.hellofigma.camoletappbar.CamoletAppBar
+import ru.mrmarvel.hellofigma.data.SharedViewModel
+import ru.mrmarvel.hellofigma.data.models.MonitoringBuildingGroup
+import ru.mrmarvel.hellofigma.data.models.MonitoringBuildingItem
+import ru.mrmarvel.hellofigma.makevideo.MakeVideo
+import ru.mrmarvel.hellofigma.monitoringitembuildingnew.MonitoringItemBuildingNew
+import ru.mrmarvel.hellofigma.monitoringitembuildingnew.Open
+import ru.mrmarvel.hellofigma.monitoringitembuildingsubitem.MonitoringItemBuildingSubItem
+import ru.mrmarvel.hellofigma.monthmonitoringlabel.MonthLabel
 import java.util.Calendar
 
 
@@ -50,7 +50,10 @@ fun getRussianMonthName(monthNum: Int): String {
 
 var a = 1
 @Composable
-fun MonitoringScreen(sharedViewModel: SharedViewModel = SharedViewModel()) {
+fun MonitoringScreen(
+    sharedViewModel: SharedViewModel = SharedViewModel(),
+    navigateToCameraScreen: () -> Unit
+) {
     // var monitoringItems = listOf<MonitoringBuildingGroup>(MonitoringBuildingGroupProvider.monitoringItems[0])
     val context = LocalContext.current
     Scaffold(
@@ -74,6 +77,7 @@ fun MonitoringScreen(sharedViewModel: SharedViewModel = SharedViewModel()) {
             ) {
                 MakeVideo(Modifier,  onMakeVideoClicked = {
                     Toast.makeText(context, "Создать видео!", Toast.LENGTH_SHORT).show()
+                    navigateToCameraScreen()
                 })
             }
         }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.hellofigma.ui.theme
+package ru.mrmarvel.hellofigma.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

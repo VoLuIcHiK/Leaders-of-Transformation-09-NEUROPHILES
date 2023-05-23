@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.hellofigma
+package ru.mrmarvel.hellofigma
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,20 +23,21 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.example.hellofigma.data.SharedViewModel
-import com.example.hellofigma.monitoringitembuildingnew.MonitoringItemBuildingNew
-import com.example.hellofigma.screens.MonitoringScreen
-import com.example.hellofigma.ui.theme.HelloFigmaTheme
+import androidx.navigation.NavGraph
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import ru.mrmarvel.hellofigma.data.SharedViewModel
+import ru.mrmarvel.hellofigma.monitoringitembuildingnew.MonitoringItemBuildingNew
+import ru.mrmarvel.hellofigma.screens.CameraScreen
+import ru.mrmarvel.hellofigma.screens.MonitoringScreen
+import ru.mrmarvel.hellofigma.ui.theme.HelloFigmaTheme
 
 val elem = @Composable {
     MonitoringItemBuildingNew(
@@ -52,13 +53,25 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController()
             HelloFigmaTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MonitoringScreen(sharedViewModel = sharedViewModel)
+                    NavHost(navController = navController, startDestination = "monitoring_screen") {
+                        composable("monitoring_screen") {
+                            MonitoringScreen(sharedViewModel = sharedViewModel,
+                                navigateToCameraScreen = {
+                                    navController.navigate("camera_screen")
+                                }
+                            )
+                        }
+                        composable("camera_screen") {
+                            CameraScreen()
+                        }
+                    }
                 }
             }
         }

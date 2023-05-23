@@ -1,4 +1,4 @@
-package com.example.hellofigma.data.models
+package ru.mrmarvel.hellofigma.data.models
 
 import java.util.Date
 
