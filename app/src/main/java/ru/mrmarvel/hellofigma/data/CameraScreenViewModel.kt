@@ -2,6 +2,7 @@ package ru.mrmarvel.hellofigma.data
 
 import android.content.Context
 import androidx.camera.view.PreviewView
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,8 @@ import javax.inject.Inject
 class CameraScreenViewModel @Inject constructor(
     private val repo: CustomCameraRepo
 ):ViewModel() {
+
+    public val isStarted = mutableStateOf(false)
 
     fun showCameraPreview(
         previewView: PreviewView,

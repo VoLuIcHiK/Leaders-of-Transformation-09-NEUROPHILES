@@ -17,6 +17,8 @@
 package ru.mrmarvel.hellofigma
 
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavGraph
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
@@ -57,6 +60,8 @@ class MainActivity : ComponentActivity() {
     private val sharedViewModel: SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        actionBar?.hide()
         setContent {
             val navController = rememberNavController()
             val context = LocalContext.current
