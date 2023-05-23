@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "jzuwoTvIOeRK3P1G8NpduC",
     "node": "152:227",
-    "version": "3531839378",
+    "version": "3532082913",
     "component-id": "cc89852ad81d903a40f2be7845f0dd35c1069fdf"
   },
   "default": "Open=NotExist",
@@ -25,7 +25,7 @@
         "id": "Description"
       },
       {
-        "type": "image",
+        "type": "vector",
         "id": "SpaceImage"
       },
       {
@@ -63,6 +63,7 @@
           {
             "id": "top_level",
             "border-radius": "10.0",
+            "tap-handler": "$onItemClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "proportional",
@@ -138,9 +139,7 @@
                 "sizing-mode": "fixed",
                 "value": "24.0"
               }
-            },
-            "image-content": "space_image.png",
-            "scale": "cover"
+            }
           },
           {
             "id": "DateNumberBackground",
@@ -274,6 +273,7 @@
           {
             "id": "top_level",
             "border-radius": "10.0",
+            "tap-handler": "$onItemClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "proportional",
@@ -486,6 +486,7 @@
           {
             "id": "top_level",
             "border-radius": "10.0",
+            "tap-handler": "$onItemClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "proportional",
@@ -563,7 +564,7 @@
                 "value": "24.0"
               }
             },
-            "image-content": "space_image.png",
+            "image-content": "extend_button1.png",
             "scale": "cover"
           },
           {
@@ -696,6 +697,11 @@
     }
   },
   "parameters": {
+    "onItemClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
     "dateNumber": {
       "data-type": "text",
       "required": false,

@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "jzuwoTvIOeRK3P1G8NpduC",
     "node": "81:154",
-    "version": "3530992803",
+    "version": "3532068512",
     "component-id": "1fef9730d255a84e3e2f14065c5117eece87c5c9"
   },
   "default": "CamoletAppBar",
@@ -78,6 +78,7 @@
           },
           {
             "id": "menu",
+            "tap-handler": "$onBurgerClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -108,6 +109,7 @@
           },
           {
             "id": "avatar",
+            "tap-handler": "$onProfileClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -123,6 +125,18 @@
           }
         ]
       }
+    }
+  },
+  "parameters": {
+    "onBurgerClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "onProfileClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
     }
   },
   "previews": [

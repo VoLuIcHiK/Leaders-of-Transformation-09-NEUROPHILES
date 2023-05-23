@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "jzuwoTvIOeRK3P1G8NpduC",
     "node": "81:192",
-    "version": "3530576934",
+    "version": "3532037076",
     "component-id": "19f73ff6fcd45c5bc3868df7cd82dc5d93e79704"
   },
   "default": "make_video",
@@ -46,6 +46,7 @@
               "spread": "0.0",
               "blend-mode": "normal"
             },
+            "tap-handler": "$onMakeVideoClicked",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "shrink"
@@ -83,6 +84,13 @@
           }
         ]
       }
+    }
+  },
+  "parameters": {
+    "onMakeVideoClicked": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
     }
   },
   "previews": [

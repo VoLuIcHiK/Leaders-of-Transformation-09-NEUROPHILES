@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "jzuwoTvIOeRK3P1G8NpduC",
     "node": "129:3545",
-    "version": "3531683111",
+    "version": "3532108602",
     "component-id": "ed2ed224218328d18cb66715229f14bb9992d5fd"
   },
   "default": "Monitoring_Item_Building_SubItem",
@@ -49,6 +49,7 @@
               "bottom": "1.0"
             },
             "border-radius": "10.0",
+            "tap-handler": "$onItemClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "proportional",
@@ -58,8 +59,9 @@
                 "sizing-mode": "shrink"
               }
             },
-            "main-axis-align": "start",
-            "cross-axis-align": "end",
+            "arrangement": "row",
+            "main-axis-align": "end",
+            "cross-axis-align": "start",
             "children": [
               "descr"
             ],
@@ -209,6 +211,11 @@
     }
   },
   "parameters": {
+    "onItemClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
     "fullDate": {
       "data-type": "text",
       "required": false,

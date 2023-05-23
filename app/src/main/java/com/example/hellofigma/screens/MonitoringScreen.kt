@@ -1,22 +1,25 @@
 package com.example.hellofigma.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import android.widget.Toast
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.*
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.*
-import androidx.core.os.ConfigurationCompat
-import androidx.core.os.LocaleListCompat
+import androidx.compose.ui.unit.dp
 import com.example.hellofigma.camoletappbar.CamoletAppBar
+import com.example.hellofigma.data.SharedViewModel
 import com.example.hellofigma.data.models.MonitoringBuildingGroup
 import com.example.hellofigma.data.models.MonitoringBuildingItem
 import com.example.hellofigma.makevideo.MakeVideo
@@ -27,35 +30,12 @@ import com.example.hellofigma.monthmonitoringlabel.MonthLabel
 import com.google.accompanist.flowlayout.FlowColumn
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
-import java.nio.channels.AsynchronousServerSocketChannel
 import java.util.Calendar
 
 
 val startingDate: Calendar = Calendar.Builder().setDate(2023, 5, 22).build()
 
-object MonitoringBuildingGroupProvider {
 
-    var monitoringItems: List<MonitoringBuildingGroup>
-
-    init {
-        monitoringItems = listOf(
-            MonitoringBuildingGroup(name="ЖК Жульен", date=startingDate.time, coordinates = "55.499117, 37.517850", opened = true),
-            MonitoringBuildingGroup(name="ЖК Жульен", date=Calendar.Builder().setDate(2023, 5, 23).build().time, coordinates = "55.499117, 37.517850"),
-            MonitoringBuildingGroup(name="ЖК Жульен", date=Calendar.Builder().setDate(2023, 6, 2).build().time, coordinates = "55.499117, 37.517850"),
-        )
-        monitoringItems[0].items = listOf(
-            MonitoringBuildingItem(name="Обход № 123. Корпус №1.1", date=monitoringItems[0].date, coordinates = "55.499117, 37.517850")
-        )
-    }
-
-}
-
-@Composable
-@ReadOnlyComposable
-fun getLocale(): java.util.Locale {
-    val configuration = LocalConfiguration.current
-    return ConfigurationCompat.getLocales(configuration).get(0) ?: LocaleListCompat.getDefault()[0]!!
-}
 
 fun getRussianMonthName(monthNum: Int): String {
     val monthsNames = listOf(
@@ -70,12 +50,19 @@ fun getRussianMonthName(monthNum: Int): String {
 
 var a = 1
 @Composable
-fun MonitoringScreen() {
+fun MonitoringScreen(sharedViewModel: SharedViewModel = SharedViewModel()) {
     // var monitoringItems = listOf<MonitoringBuildingGroup>(MonitoringBuildingGroupProvider.monitoringItems[0])
-
+    val context = LocalContext.current
     Scaffold(
         topBar = {
-            CamoletAppBar(Modifier.fillMaxWidth())
+            CamoletAppBar(Modifier.fillMaxWidth(),
+                onBurgerClick = {
+                    Toast.makeText(context, "Открыть меню!", Toast.LENGTH_SHORT).show()
+                },
+                onProfileClick = {
+                    Toast.makeText(context, "Открыть профиль!", Toast.LENGTH_SHORT).show()
+                }
+            )
         },
         bottomBar = {
             Row(
@@ -85,7 +72,9 @@ fun MonitoringScreen() {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                MakeVideo()
+                MakeVideo(Modifier,  onMakeVideoClicked = {
+                    Toast.makeText(context, "Создать видео!", Toast.LENGTH_SHORT).show()
+                })
             }
         }
     ) { scaffoldPadding ->
@@ -96,11 +85,11 @@ fun MonitoringScreen() {
         }
     }
 }
-
 @Preview
 @Composable
-fun Main() {
-    val monitoringItems by remember {mutableStateOf(MonitoringBuildingGroupProvider.monitoringItems)}
+fun Main(sharedViewModel: SharedViewModel = SharedViewModel()) {
+    val monitoringItems = remember {sharedViewModel.monitoringBuildingGroupList}
+    val openedGroups = remember {sharedViewModel.openedGroups}
     Surface(Modifier.fillMaxWidth()) {
 
 
@@ -110,6 +99,7 @@ fun Main() {
             modifier = Modifier
                 .padding(vertical = 10.dp, horizontal = 20.dp)
                 .fillMaxWidth()
+                .animateContentSize(tween(durationMillis = 250, delayMillis = 250)),
         ) {
 
             var lastMonth = 0
@@ -124,14 +114,42 @@ fun Main() {
                 val hasItems = monitoringItem.items.isNotEmpty()
                 val itemItems = monitoringItem.items
                 Column(horizontalAlignment = Alignment.End,
-                    modifier = Modifier.fillMaxWidth(0.87f)
+                    modifier = Modifier
+                        .fillMaxWidth(0.87f) // Костыль для FlowColumn
+                        .animateContentSize(tween(durationMillis = 250, delayMillis = 250)),
                 ) {
                     if (showMonth) {
                         MonthLabel(monthName = monthName)
                     }
-                    MonitoringBuildingGroupByModel(monitoringItem)
-                    if (hasItems) {
+                    val context = LocalContext.current
+                    MonitoringBuildingGroupByModel(monitoringItem, onExtendClick = {
+                        if (monitoringItem.opened) {
+
+                            sharedViewModel.openedGroups.remove(monitoringItem)
+                            monitoringItem.opened = false
+                        } else {
+
+                            monitoringItem.opened = true
+                            sharedViewModel.openedGroups.add(monitoringItem)
+                        }
+                    },
+                    onItemClick = {
+                        if (itemItems.size > 1) return@MonitoringBuildingGroupByModel
+                        if (!hasItems) {
+                            Toast.makeText(context, "Нет отчётов!", Toast.LENGTH_SHORT).show()
+                            return@MonitoringBuildingGroupByModel
+                        }
+                        val itemItem = itemItems[0]
+                        Toast.makeText(context,
+                            "Открыть единственный отчёт ${itemItem.name} с ID ${itemItem.id}}",
+                            Toast.LENGTH_SHORT).show()
+
+                    })
+                    if (hasItems && openedGroups.contains(monitoringItem)) {
                         // НЕльзя использовать вложенные списки
+                        // Поэтому здесь костыль FlowColumn,
+                        // Который нормально размер не ставит >:(
+
                         FlowColumn(
                             Modifier
                                 .padding(top = 8.dp),
@@ -142,6 +160,12 @@ fun Main() {
                             itemItems.forEach { itemInItem ->
                                 MonitoringBuildingSubItemByModel(
                                     itemInItem,
+                                    onItemClick = {
+                                        Toast.makeText(context,
+                                            "Открыть этот отчёт ${itemInItem.name} " +
+                                                    "с ID ${itemInItem.id}}",
+                                            Toast.LENGTH_SHORT).show()
+                                    }
                                 )
                             }
                         }
@@ -156,7 +180,11 @@ fun Main() {
 }
 
 @Composable
-fun MonitoringBuildingGroupByModel(group: MonitoringBuildingGroup, modifier: Modifier = Modifier) {
+fun MonitoringBuildingGroupByModel(group: MonitoringBuildingGroup,
+                                   modifier: Modifier = Modifier,
+                                   onExtendClick: (() -> Unit)? = null,
+                                   onItemClick: () -> Unit = {}
+) {
     val dateCalendar = Calendar.getInstance()
     dateCalendar.time = group.date
     val dayNum = dateCalendar.get(Calendar.DAY_OF_MONTH)
@@ -164,32 +192,42 @@ fun MonitoringBuildingGroupByModel(group: MonitoringBuildingGroup, modifier: Mod
     val monthName = getRussianMonthName(monthNum)
     val yearNum = dateCalendar.get(Calendar.YEAR)
     dateCalendar.time = group.date
-    var open = Open.NotExist
+    var openState = Open.NotExist
     if (group.items.isNotEmpty()) {
-        open = if (group.opened) {
+        openState = if (group.opened) {
             Open.Yes
         } else {
             Open.No
         }
     }
+    val context = LocalContext.current
     MonitoringItemBuildingNew(
-        open = open,
+        open = openState,
         dateNumber = String.format("%02d", dayNum),
         dateFull = "$monthName $dayNum $yearNum",
         projectName = group.name,
         coordinates = group.coordinates,
-        modifier = modifier
+        modifier = modifier,
+        onExtendButtonClick = {onExtendClick?.invoke()},
+        onItemClick = onItemClick
+        // {
+        //     group.opened = !group.opened
+        //     Toast.makeText(context, group.opened.toString(), Toast.LENGTH_SHORT).show()
+        // }
     )
 }
 
 @Preview
 @Composable
 fun MonitoringBuildingGroupPreview() {
-    MonitoringBuildingGroupByModel(MonitoringBuildingGroupProvider.monitoringItems[2])
+    MonitoringBuildingGroupByModel(SharedViewModel().monitoringBuildingGroupList[2])
 }
 
 @Composable
-fun MonitoringBuildingSubItemByModel(item: MonitoringBuildingItem, modifier: Modifier = Modifier) {
+fun MonitoringBuildingSubItemByModel(item: MonitoringBuildingItem,
+                                     modifier: Modifier = Modifier,
+                                     onItemClick: () -> Unit = {},
+) {
     val dateCalendar = Calendar.getInstance()
     dateCalendar.time = item.date
     val dayNum = dateCalendar.get(Calendar.DAY_OF_MONTH)
@@ -199,7 +237,8 @@ fun MonitoringBuildingSubItemByModel(item: MonitoringBuildingItem, modifier: Mod
     MonitoringItemBuildingSubItem(modifier,
         projectName = item.name,
         coordinates = item.coordinates,
-        fullDate = "$monthName $dayNum $yearNum"
+        fullDate = "$monthName $dayNum $yearNum",
+        onItemClick = onItemClick
     )
 }
 
@@ -207,6 +246,6 @@ fun MonitoringBuildingSubItemByModel(item: MonitoringBuildingItem, modifier: Mod
 @Composable
 fun MonitoringBuildingSubItemByModelPreview() {
     MonitoringBuildingSubItemByModel(
-        item = MonitoringBuildingGroupProvider.monitoringItems[0].items[0]
+        item = SharedViewModel().monitoringBuildingGroupList[0].items[0]
     )
 }
