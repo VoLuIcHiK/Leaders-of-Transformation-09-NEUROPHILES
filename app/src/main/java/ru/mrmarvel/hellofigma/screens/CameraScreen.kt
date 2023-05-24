@@ -2,26 +2,39 @@ package ru.mrmarvel.hellofigma.screens
 
 import android.Manifest
 import android.content.pm.ActivityInfo
-import android.graphics.drawable.GradientDrawable.Orientation
 import android.os.Build
 import android.widget.Toast
 import androidx.camera.view.PreviewView
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +42,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -38,7 +53,14 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.relay.compose.BoxScopeInstanceImpl.align
 import ru.mrmarvel.hellofigma.camerabutton.CameraButton
 import ru.mrmarvel.hellofigma.changeflatbutton.ChangeFlatButton
+import ru.mrmarvel.hellofigma.changeroombutton.ChangeRoomButton
 import ru.mrmarvel.hellofigma.data.CameraScreenViewModel
+import ru.mrmarvel.hellofigma.flatinputfield.FlatInputField
+import ru.mrmarvel.hellofigma.flatlabel.FlatLabel
+import ru.mrmarvel.hellofigma.flatlock.FlatLock
+import ru.mrmarvel.hellofigma.flatlock.IsLocked
+import ru.mrmarvel.hellofigma.flatprogress.FlatProgress
+import ru.mrmarvel.hellofigma.roomprogressbutton.RoomProgressButton
 import ru.mrmarvel.hellofigma.util.LockScreenOrientation
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -84,6 +106,10 @@ fun CameraScreen(
     val screenWidth = configuration.screenWidthDp.dp
     var previewView: PreviewView
 
+    val currentFlatNumber = remember {viewModel.currentFlatNumber}
+    val isFlatLocked = remember {viewModel.isFlatLocked}
+    val isFlatChangeWindowShown = remember { mutableStateOf(false) }
+
     // we will show camera preview once permission is granted
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
     Surface(
@@ -97,7 +123,10 @@ fun CameraScreen(
                 .background(Color.Black),
                 contentAlignment = Alignment.CenterStart
             ) {
-                if (remember {viewModel.isStarted}.value) {
+                AnimatedVisibility(visible = remember {viewModel.isStarted}.value,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
                     AndroidView(
                         factory = {
                             previewView = PreviewView(it)
@@ -105,7 +134,7 @@ fun CameraScreen(
                             previewView
                         },
                         modifier = Modifier
-                                // FORCE FILL
+                            // FORCE FILL
                             .fillMaxHeight()
                             .width(screenWidth * 0.97f)
                     )
@@ -128,48 +157,122 @@ fun CameraScreen(
                 CameraButton()
             }
         }
+        AnimatedVisibility(visible = !isFlatChangeWindowShown.value,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp),
+                contentAlignment = Alignment.TopEnd,
+            ) {
+                ChangeFlatButton(Modifier.wrapContentSize(), onItemClick = {
+                    isFlatChangeWindowShown.value = true
+                })
+            }
+        }
         Box(modifier = Modifier
             .fillMaxSize()
-            .padding(32.dp),
-            contentAlignment = Alignment.TopEnd,
+            .padding(8.dp),
+            contentAlignment = Alignment.TopStart
         ) {
-            ChangeFlatButton(Modifier.wrapContentSize())
-        }
-
-    }
-    return
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Column() {
-            
-        }
-        Box(
-            modifier = Modifier
-                .height(screeHeight * 0.05f)
-                .background(color = Color.Black),
-            contentAlignment = Alignment.Center
-        ){
-            IconButton(onClick = {
-                if (permissionState.allPermissionsGranted){
-                    viewModel.captureAndSave(context)
+            Row (
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                FlatLabel(Modifier, "Квартира ${currentFlatNumber.value}")
+                val lockClick = {
+                    isFlatLocked.value = !isFlatLocked.value
                 }
-                else{
-                    Toast.makeText(
-                        context,
-                        "Please accept permission in app settings",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }) {
+                Crossfade(targetState = isFlatLocked.value) {
+                    when (it) {
+                        false -> FlatLock(
+                            Modifier.padding(start = 8.dp),
+                            onItemClick = lockClick, isLocked = IsLocked.NotLocked
+                        )
 
-                CameraButton()
+                        true -> FlatLock(
+                            Modifier.padding(start = 8.dp),
+                            onItemClick = lockClick, isLocked = IsLocked.Locked
+                        )
+                    }
+                }
+                FlatProgress(Modifier.padding(start=8.dp),"0%")
+            }
+        }
+        val isRoomSelected = remember {viewModel.isRoomSelected}
+        AnimatedVisibility(visible = isRoomSelected.value,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp),
+                contentAlignment = Alignment.BottomEnd
+            ) {
+                ChangeRoomButton(onItemClick = {
+                    isRoomSelected.value = false
+                })
+            }
+        }
+        val roomsNames = listOf("Туалет", "Коридор", "Жилая", "Кухня", "Ванная")
+        AnimatedVisibility(visible = !remember {viewModel.isRoomSelected}.value,
+            enter = expandVertically(expandFrom = Alignment.Top),
+            exit = shrinkVertically(shrinkTowards = Alignment.Top),
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    contentPadding = PaddingValues(horizontal = 8.dp)
+                ) {
+                    items(roomsNames.size) { i ->
+                        RoomProgressButton(roomName = roomsNames[i], progressText = "${i * 20}%", onItemClick = {
+                            viewModel.isRoomSelected.value = true
+                        })
+                    }
+                }
+            }
+        }
+        AnimatedVisibility(visible = isFlatChangeWindowShown.value,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                val textIn = remember { mutableStateOf("") }
+                FlatInputField(
+                    fieldItem = {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            BasicTextField(
+                                value = textIn.value,
+                                onValueChange = {textIn.value = it},
+                                singleLine = true,
+                                textStyle = TextStyle(textAlign = TextAlign.Center),
+                            )
+                        }
+                    },
+                    onOkClick = {
+                        val newVal = textIn.value.toIntOrNull() ?: return@FlatInputField
+                        currentFlatNumber.value = newVal.toString()
+                        isFlatLocked.value = true
+                        isFlatChangeWindowShown.value = false
+                    })
 
             }
         }
-
     }
 }
 
@@ -183,4 +286,53 @@ fun CameraButtonPreview() {
 @Composable
 fun ChangeFlatButtonPreview() {
     ChangeFlatButton()
+}
+
+@Preview
+@Composable
+fun FlatLabelPreview() {
+    FlatLabel(Modifier, "Квартира 128")
+}
+
+@Preview
+@Composable
+fun FlatLockPreview() {
+    FlatLock()
+}
+
+@Preview
+@Composable
+fun FlatProgressPreview() {
+    FlatProgress(Modifier, "0%")
+}
+@Preview
+@Composable
+fun RoomProgressButtonPreview() {
+    RoomProgressButton(Modifier, "Туалет", "0%")
+}
+
+@Preview
+@Composable
+fun ChangeRoomButtonPreview() {
+    ChangeRoomButton()
+}
+
+@Preview
+@Composable
+fun FlatInputFieldPreview() {
+    FlatInputField(
+        fieldItem = {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                BasicTextField(
+                    value = "1",
+                    onValueChange = {},
+                    singleLine = true,
+                    modifier = Modifier.align(Alignment.Center),
+                    textStyle = TextStyle(textAlign = TextAlign.Center),
+                )
+            }
+        })
 }

@@ -18,6 +18,9 @@ class CameraScreenViewModel @Inject constructor(
 ):ViewModel() {
 
     public val isStarted = mutableStateOf(false)
+    val isRoomSelected = mutableStateOf(true)
+    val currentFlatNumber = mutableStateOf("128")
+    val isFlatLocked = mutableStateOf(false)
 
     fun showCameraPreview(
         previewView: PreviewView,

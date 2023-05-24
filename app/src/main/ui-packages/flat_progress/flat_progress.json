@@ -1,14 +1,14 @@
 {
-  "name": "change_flat_button",
+  "name": "flat_progress",
   "version": 32,
   "source-key": {
     "type": "figma",
     "file": "jzuwoTvIOeRK3P1G8NpduC",
-    "node": "198:639",
-    "version": "3539571440",
-    "component-id": "961a23ebe9ab7f827227223a499603342fc1f486"
+    "node": "203:665",
+    "version": "3539191858",
+    "component-id": "170aa88c068debe7228174e24fa83a56ce93bd19"
   },
-  "default": "ChangeFlatButton",
+  "default": "FlatProgress",
   "design": {
     "atoms": [
       {
@@ -18,26 +18,21 @@
       },
       {
         "type": "text",
-        "id": "TextLabelEnter"
-      },
-      {
-        "type": "text",
-        "id": "TextLabelWhat"
+        "id": "ProgressLabel"
       }
     ],
     "modes": {
-      "ChangeFlatButton": {
+      "FlatProgress": {
         "rules": [
           {
             "id": "top_level",
             "padding": {
-              "left": "19.0",
+              "left": "12.0",
               "top": "2.0",
-              "right": "19.0",
+              "right": "12.0",
               "bottom": "2.0"
             },
             "border-radius": "20.0",
-            "tap-handler": "$onItemClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "shrink"
@@ -46,11 +41,11 @@
                 "sizing-mode": "shrink"
               }
             },
+            "arrangement": "row",
             "children": [
-              "TextLabelEnter",
-              "TextLabelWhat"
+              "ProgressLabel"
             ],
-            "item-spacing": "2.0",
+            "item-spacing": "10.0",
             "background-color": {
               "alpha": "1.0",
               "hue": "210.71428571428572",
@@ -59,7 +54,7 @@
             }
           },
           {
-            "id": "TextLabelEnter",
+            "id": "ProgressLabel",
             "font-weight": "500.0",
             "color": {
               "alpha": "1.0",
@@ -67,22 +62,7 @@
               "saturation": "0.027888446215139345",
               "value": "0.984313725490196"
             },
-            "text-content": "Ввести",
-            "overflow": "visible",
-            "text-align-vertical": "center",
-            "line-height": "1.2599999564034599",
-            "typeface": "CoFo Sans"
-          },
-          {
-            "id": "TextLabelWhat",
-            "font-weight": "500.0",
-            "color": {
-              "alpha": "1.0",
-              "hue": "222.85714285714286",
-              "saturation": "0.027888446215139345",
-              "value": "0.984313725490196"
-            },
-            "text-content": "квартиру",
+            "text-content": "$progressText",
             "overflow": "visible",
             "text-align-vertical": "center",
             "line-height": "1.2599999564034599",
@@ -93,18 +73,21 @@
     }
   },
   "parameters": {
-    "onItemClick": {
-      "data-type": "void-callback",
+    "progressText": {
+      "data-type": "text",
       "required": false,
       "description": ""
     }
   },
   "previews": [
     {
-      "design": "ChangeFlatButton",
+      "design": "FlatProgress",
       "size": {
-        "width": 99.0,
-        "height": 42.0
+        "width": 46.0,
+        "height": 22.0
+      },
+      "parameters": {
+        "progressText": "0%"
       }
     }
   ],
