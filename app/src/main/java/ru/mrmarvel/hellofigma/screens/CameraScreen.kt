@@ -3,14 +3,12 @@ package ru.mrmarvel.hellofigma.screens
 import android.Manifest
 import android.content.pm.ActivityInfo
 import android.os.Build
+import android.view.SurfaceHolder
+import android.view.SurfaceView
 import android.widget.Toast
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.core.FiniteAnimationSpec
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -51,6 +49,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.relay.compose.BoxScopeInstanceImpl.align
+import com.tencent.yolov8ncnn.Yolov8Ncnn
 import ru.mrmarvel.hellofigma.camerabutton.CameraButton
 import ru.mrmarvel.hellofigma.changeflatbutton.ChangeFlatButton
 import ru.mrmarvel.hellofigma.changeroombutton.ChangeRoomButton
@@ -129,9 +128,31 @@ fun CameraScreen(
                 ) {
                     AndroidView(
                         factory = {
-                            previewView = PreviewView(it)
-                            viewModel.showCameraPreview(previewView, lifecycleOwner)
-                            previewView
+                            // previewView = PreviewView(it)
+                            // viewModel.showCameraPreview(previewView, lifecycleOwner)
+                            // previewView
+                            val yolov8Ncnn = Yolov8Ncnn()
+                            SurfaceView(context).apply {
+                                holder.addCallback(object : SurfaceHolder.Callback {
+                                    override fun surfaceCreated(p0: SurfaceHolder) {
+                                    }
+
+                                    override fun surfaceChanged(
+                                        p0: SurfaceHolder,
+                                        p1: Int,
+                                        p2: Int,
+                                        p3: Int
+                                    ) {
+                                        yolov8Ncnn.openCamera(1)
+                                        yolov8Ncnn.setOutputWindow(holder.surface)
+                                    }
+
+                                    override fun surfaceDestroyed(p0: SurfaceHolder) {
+                                        yolov8Ncnn.closeCamera()
+                                    }
+
+                                })
+                            }
                         },
                         modifier = Modifier
                             // FORCE FILL
@@ -141,9 +162,10 @@ fun CameraScreen(
                 }
             }
         }
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp),
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp),
             contentAlignment = Alignment.CenterEnd,
         ) {
             IconButton(onClick = {
@@ -161,9 +183,10 @@ fun CameraScreen(
             enter = fadeIn(),
             exit = fadeOut()
         ) {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(32.dp),
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
                 contentAlignment = Alignment.TopEnd,
             ) {
                 ChangeFlatButton(Modifier.wrapContentSize(), onItemClick = {
@@ -215,7 +238,8 @@ fun CameraScreen(
             }
         }
         val roomsNames = listOf("Туалет", "Коридор", "Жилая", "Кухня", "Ванная")
-        AnimatedVisibility(visible = !remember {viewModel.isRoomSelected}.value,
+        AnimatedVisibility(
+            visible = !remember { viewModel.isRoomSelected }.value,
             enter = expandVertically(expandFrom = Alignment.Top),
             exit = shrinkVertically(shrinkTowards = Alignment.Top),
         ) {
