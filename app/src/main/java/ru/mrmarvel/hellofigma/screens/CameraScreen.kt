@@ -2,6 +2,7 @@ package ru.mrmarvel.hellofigma.screens
 
 import android.Manifest
 import android.content.pm.ActivityInfo
+import android.hardware.Camera
 import android.os.Build
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -36,6 +37,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -108,6 +110,15 @@ fun CameraScreen(
     val currentFlatNumber = remember {viewModel.currentFlatNumber}
     val isFlatLocked = remember {viewModel.isFlatLocked}
     val isFlatChangeWindowShown = remember { mutableStateOf(false) }
+    // val camerasCount = Camera.getNumberOfCameras()
+    // for (i in 0 until camerasCount) {
+    //     var camera: Camera? = Camera.open(i)
+    //     val parameters: Camera.Parameters = camera!!.parameters
+    //     parameters.set("orientation", "portrait");     camera.setDisplayOrientation(90);
+    //     camera.parameters = parameters
+    //     camera.release()
+    //     camera = null
+    // }
 
     // we will show camera preview once permission is granted
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
@@ -126,39 +137,44 @@ fun CameraScreen(
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
-                    AndroidView(
-                        factory = {
-                            // previewView = PreviewView(it)
-                            // viewModel.showCameraPreview(previewView, lifecycleOwner)
-                            // previewView
-                            val yolov8Ncnn = Yolov8Ncnn()
-                            SurfaceView(context).apply {
-                                holder.addCallback(object : SurfaceHolder.Callback {
-                                    override fun surfaceCreated(p0: SurfaceHolder) {
-                                    }
+                    Box(Modifier
+                        // FORCE FILL
+                        .fillMaxHeight()
+                        .width(screenWidth * 0.97f)) {
+                        AndroidView(
+                            factory = {
+                                // previewView = PreviewView(it)
+                                // viewModel.showCameraPreview(previewView, lifecycleOwner)
+                                // previewView
+                                var yolov8Ncnn: Yolov8Ncnn? = null
+                                SurfaceView(context).apply {
+                                    holder.addCallback(object : SurfaceHolder.Callback {
+                                        override fun surfaceCreated(p0: SurfaceHolder) {
+                                            if (yolov8Ncnn == null)
+                                                yolov8Ncnn = Yolov8Ncnn()
+                                        }
 
-                                    override fun surfaceChanged(
-                                        p0: SurfaceHolder,
-                                        p1: Int,
-                                        p2: Int,
-                                        p3: Int
-                                    ) {
-                                        yolov8Ncnn.openCamera(1)
-                                        yolov8Ncnn.setOutputWindow(holder.surface)
-                                    }
+                                        override fun surfaceChanged(
+                                            p0: SurfaceHolder,
+                                            p1: Int,
+                                            p2: Int,
+                                            p3: Int
+                                        ) {
+                                            yolov8Ncnn?.openCamera(1)
+                                            yolov8Ncnn?.setOutputWindow(p0.surface)
+                                        }
 
-                                    override fun surfaceDestroyed(p0: SurfaceHolder) {
-                                        yolov8Ncnn.closeCamera()
-                                    }
+                                        override fun surfaceDestroyed(p0: SurfaceHolder) {
+                                            yolov8Ncnn?.closeCamera()
+                                            yolov8Ncnn = null
+                                        }
 
-                                })
-                            }
-                        },
-                        modifier = Modifier
-                            // FORCE FILL
-                            .fillMaxHeight()
-                            .width(screenWidth * 0.97f)
-                    )
+                                    })
+                                }
+                            },
+                            modifier = Modifier
+                        )
+                    }
                 }
             }
         }
