@@ -63,6 +63,7 @@ import ru.mrmarvel.hellofigma.flatlock.IsLocked
 import ru.mrmarvel.hellofigma.flatprogress.FlatProgress
 import ru.mrmarvel.hellofigma.roomprogressbutton.RoomProgressButton
 import ru.mrmarvel.hellofigma.util.LockScreenOrientation
+import ru.mrmarvel.hellofigma.util.findActivity
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -97,7 +98,6 @@ fun CameraScreen(
             Toast.makeText(context, "Нужно разрешение ${it.permission}!", Toast.LENGTH_LONG).show()
         }
     }
-
 
 
 
@@ -150,8 +150,15 @@ fun CameraScreen(
                                 SurfaceView(context).apply {
                                     holder.addCallback(object : SurfaceHolder.Callback {
                                         override fun surfaceCreated(p0: SurfaceHolder) {
-                                            if (yolov8Ncnn == null)
+                                            if (yolov8Ncnn == null) {
                                                 yolov8Ncnn = Yolov8Ncnn()
+                                                yolov8Ncnn?.loadModel(
+                                                    context.findActivity().assets,
+                                                    0,
+                                                    0
+                                                )
+                                            }
+
                                         }
 
                                         override fun surfaceChanged(
