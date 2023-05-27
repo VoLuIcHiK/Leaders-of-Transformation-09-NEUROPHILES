@@ -8,7 +8,7 @@
 *Чиженко Леон (https://github.com/Leon200211) - Frontend-разработчик*    
 *Сергей Куликов (https://github.com/MrMarvel) - Mobile/Backend-разработчик*  
 *Карпов Даниил (https://github.com/Free4ky) - ML-engineer*  
-*Валуева Анастасия (https://github.com/VoLuIcHiK) - ML-engineer/Designer*   
+*Валуева Анастасия (https://github.com/VoLuIcHiK) - Data Engineer/Designer*   
 *Козлов Михаил (https://github.com/Borntowarn) - ML-engineer*  
 
 ## Оглавление
