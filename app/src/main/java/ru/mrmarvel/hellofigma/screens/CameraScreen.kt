@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.IconButton
@@ -121,7 +122,7 @@ fun CameraScreen(
     // }
 
     // we will show camera preview once permission is granted
-    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+//    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
     Surface(
         Modifier
             .background(Color.Black)
@@ -189,7 +190,7 @@ fun CameraScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(32.dp),
-            contentAlignment = Alignment.CenterEnd,
+            contentAlignment = Alignment.BottomCenter,
         ) {
             IconButton(onClick = {
                 Toast.makeText(
@@ -210,7 +211,7 @@ fun CameraScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(32.dp),
-                contentAlignment = Alignment.TopEnd,
+                contentAlignment = Alignment.BottomStart,
             ) {
                 ChangeFlatButton(Modifier.wrapContentSize(), onItemClick = {
                     isFlatChangeWindowShown.value = true
@@ -269,13 +270,13 @@ fun CameraScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(32.dp),
-                contentAlignment = Alignment.BottomCenter
+                    .padding(vertical = 32.dp, horizontal = 2.dp),
+                contentAlignment = Alignment.CenterEnd
             ) {
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+                LazyColumn(
+                    modifier = Modifier.fillMaxHeight(0.8f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround,
                     contentPadding = PaddingValues(horizontal = 8.dp)
                 ) {
                     items(roomsNames.size) { i ->
