@@ -676,7 +676,6 @@ void NdkCameraWindow::on_image(const unsigned char* nv21, int nv21_width, int nv
                 rotate_type = 8;
             }
         }
-
         if (accelerometer_orientation == 0)
         {
             render_w = roi_w;
@@ -701,10 +700,14 @@ void NdkCameraWindow::on_image(const unsigned char* nv21, int nv21_width, int nv
             render_h = roi_w;
             render_rotate_type = 6;
         }
+        render_w = roi_w;
+        render_h = roi_h;
+        rotate_type = 1;
+        render_rotate_type = rotate_type;
     }
 
     // crop and rotate nv21
-    cv::Mat nv21_croprotated(roi_h + roi_h / 2, roi_w, CV_8UC1);
+    cv::Mat nv21_croprotated(roi_h, roi_w+roi_w/2, CV_8UC1);
     {
         const unsigned char* srcY = nv21 + nv21_roi_y * nv21_width + nv21_roi_x;
         unsigned char* dstY = nv21_croprotated.data;
