@@ -73,7 +73,7 @@
 
 ## Интерфейс приложения
 
-<img width="800" alt="image" src="![Интерфейс](https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/1239d464-b4b0-4355-b307-2a935bb2eca5)">
+<img width="400" height="600" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/88b13de0-2957-426c-be89-3658a13db2cf">
 
 ## Ссылка на сайт:
 - [Ссылка на страницу сайта с нашим решением](http://f0798611.xsph.ru/)
