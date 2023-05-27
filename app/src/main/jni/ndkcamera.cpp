@@ -543,7 +543,7 @@ void NdkCameraWindow::on_image(const unsigned char* nv21, int nv21_width, int nv
             std::swap(win_w, win_h);
         }
 
-        const int final_orientation = (camera_orientation + accelerometer_orientation) % 360;
+        const int final_orientation = (accelerometer_orientation) % 360;
 
         if (final_orientation == 0 || final_orientation == 180)
         {
