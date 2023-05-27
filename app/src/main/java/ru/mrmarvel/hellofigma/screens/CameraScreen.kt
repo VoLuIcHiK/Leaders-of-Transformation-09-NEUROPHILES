@@ -58,6 +58,7 @@ import ru.mrmarvel.hellofigma.camerabutton.CameraButton
 import ru.mrmarvel.hellofigma.changeflatbutton.ChangeFlatButton
 import ru.mrmarvel.hellofigma.changeroombutton.ChangeRoomButton
 import ru.mrmarvel.hellofigma.data.CameraScreenViewModel
+import ru.mrmarvel.hellofigma.endroombutton.EndRoomButton
 import ru.mrmarvel.hellofigma.flatinputfield.FlatInputField
 import ru.mrmarvel.hellofigma.flatlabel.FlatLabel
 import ru.mrmarvel.hellofigma.flatlock.FlatLock
@@ -272,7 +273,7 @@ fun CameraScreen(
                 .padding(32.dp),
                 contentAlignment = Alignment.BottomEnd
             ) {
-                ChangeRoomButton(onItemClick = {
+                EndRoomButton(onItemClick = {
                     isRoomSelected.value = false
                 })
             }

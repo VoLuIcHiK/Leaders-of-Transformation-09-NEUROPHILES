@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "jzuwoTvIOeRK3P1G8NpduC",
     "node": "310:235",
-    "version": "3560653336",
+    "version": "3560656441",
     "component-id": "87338342683703e49228f21caccdef7e1220ef5d"
   },
   "default": "EndRoomButton",
@@ -37,6 +37,7 @@
               "bottom": "2.0"
             },
             "border-radius": "20.0",
+            "tap-handler": "$onItemClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "shrink"
@@ -86,6 +87,13 @@
           }
         ]
       }
+    }
+  },
+  "parameters": {
+    "onItemClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
     }
   },
   "previews": [

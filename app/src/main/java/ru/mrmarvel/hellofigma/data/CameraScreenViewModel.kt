@@ -19,7 +19,7 @@ class CameraScreenViewModel @Inject constructor(
 ):ViewModel() {
 
     public val isStarted = mutableStateOf(false)
-    val isRoomSelected = mutableStateOf(true)
+    val isRoomSelected = mutableStateOf(false)
     val currentFlatNumber = mutableStateOf("128")
     val isFlatLocked = mutableStateOf(false)
     var roomPlannedData = Vector<Int>()
