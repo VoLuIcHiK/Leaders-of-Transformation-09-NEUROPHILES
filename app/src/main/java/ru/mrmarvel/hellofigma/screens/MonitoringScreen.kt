@@ -47,8 +47,6 @@ fun getRussianMonthName(monthNum: Int): String {
     if (monthNum > 12) throw IllegalArgumentException("More than 12")
     return monthsNames[monthNum+1]
 }
-
-var a = 1
 @Composable
 fun MonitoringScreen(
     sharedViewModel: SharedViewModel = SharedViewModel(),
