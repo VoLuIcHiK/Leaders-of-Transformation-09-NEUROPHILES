@@ -150,7 +150,7 @@ fun CameraScreen(
                 ) {
                     Box(Modifier
                         // FORCE FILL
-                        .fillMaxHeight()
+                        .fillMaxWidth()
                         .width(screenWidth * 0.97f)) {
                         AndroidView(
                             factory = {
