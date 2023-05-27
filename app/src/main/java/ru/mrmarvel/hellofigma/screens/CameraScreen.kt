@@ -209,6 +209,7 @@ fun CameraScreen(
                 ).show()
                 viewModel.isStarted.value = !viewModel.isStarted.value
                 // TODO: Сделать нормальное получение
+                //var room =
                 var a = Vector<Int>()
                 if (!viewModel.isStarted.value) {
                     a = yolov8Ncnn.data
@@ -277,7 +278,7 @@ fun CameraScreen(
                 })
             }
         }
-        val roomsNames = listOf("Туалет", "Коридор", "Жилая", "Кухня", "Ванная")
+        val roomsNames = listOf("Санузел", "Коридор", "Жилая", "Кухня")
         AnimatedVisibility(
             visible = !remember { viewModel.isRoomSelected }.value,
             enter = expandVertically(expandFrom = Alignment.Top),
@@ -296,7 +297,7 @@ fun CameraScreen(
                     contentPadding = PaddingValues(horizontal = 8.dp)
                 ) {
                     items(roomsNames.size) { i ->
-                        RoomProgressButton(roomName = roomsNames[i], progressText = "${i * 20}%", onItemClick = {
+                        RoomProgressButton(roomName = roomsNames[i], progressText = "${(i+1) * 25}%", onItemClick = {
                             viewModel.isRoomSelected.value = true
                         })
                     }
