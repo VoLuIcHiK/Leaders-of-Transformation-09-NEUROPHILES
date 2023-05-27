@@ -279,7 +279,7 @@ fun CameraScreen(
                 })
             }
         }
-        val roomsNames = listOf("Туалет", "Коридор", "Жилая", "Кухня", "Ванная")
+        val roomsNames = listOf("Санузел", "Коридор", "Жилая", "Кухня")
         AnimatedVisibility(
             visible = !remember { viewModel.isRoomSelected }.value,
             enter = expandVertically(expandFrom = Alignment.Top),
@@ -298,7 +298,7 @@ fun CameraScreen(
                     contentPadding = PaddingValues(horizontal = 8.dp)
                 ) {
                     items(roomsNames.size) { i ->
-                        RoomProgressButton(roomName = roomsNames[i], progressText = "${i * 20}%", onItemClick = {
+                        RoomProgressButton(roomName = roomsNames[i], progressText = "${(i+1) * 25}%", onItemClick = {
                             viewModel.isRoomSelected.value = true
                         })
                     }
