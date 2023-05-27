@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.ActivityInfo
 import android.hardware.Camera
 import android.os.Build
+import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.Toast
@@ -65,6 +66,7 @@ import ru.mrmarvel.hellofigma.flatprogress.FlatProgress
 import ru.mrmarvel.hellofigma.roomprogressbutton.RoomProgressButton
 import ru.mrmarvel.hellofigma.util.LockScreenOrientation
 import ru.mrmarvel.hellofigma.util.findActivity
+import java.util.Vector
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -128,6 +130,13 @@ fun CameraScreen(
             .background(Color.Black)
             .fillMaxSize()
     ) {
+        // TODO: Посмотреть, нужно ли вызывать несколько раз. Спросить у Сереги как работает Surface
+        var yolov8Ncnn = Yolov8Ncnn();
+        yolov8Ncnn?.loadModel(
+            context.findActivity().assets,
+            0,
+            0
+        );
         if (permissionState.allPermissionsGranted){
             Box(modifier = Modifier
                 .fillMaxSize()
@@ -199,6 +208,13 @@ fun CameraScreen(
                     Toast.LENGTH_SHORT
                 ).show()
                 viewModel.isStarted.value = !viewModel.isStarted.value
+                // TODO: Сделать нормальное получение
+                var a = Vector<Int>()
+                if (!viewModel.isStarted.value) {
+                    a = yolov8Ncnn.data
+                }
+                Log.d("data", a.toString())
+
             }) {
                 CameraButton()
             }

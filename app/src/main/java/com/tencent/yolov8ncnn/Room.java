@@ -1,7 +1,9 @@
 package com.tencent.yolov8ncnn;
 
+import java.util.HashMap;
 
 public class Room {
-    public static int room_type = 0;
+    public static HashMap<Integer, Integer> kitchen = new HashMap<Integer, Integer>(){{
+        put(0, 0);
+    }};
 }
-

@@ -177,23 +177,9 @@ enum class Rooms {
 };
 
 static const char *class_names[] = {
-        "person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat",
-        "traffic light",
-        "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse",
-        "sheep", "cow",
-        "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie",
-        "suitcase", "frisbee",
-        "skis", "snowboard", "sports ball", "kite", "baseball bat", "baseball glove",
-        "skateboard", "surfboard",
-        "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl",
-        "banana", "apple",
-        "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza", "donut", "cake",
-        "chair", "couch",
-        "potted plant", "bed", "dining table", "toilet", "tv", "laptop", "mouse", "remote",
-        "keyboard", "cell phone",
-        "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase",
-        "scissors", "teddy bear",
-        "hair drier", "toothbrush"
+        "bath", "ceiling_finish", "ceiling_rough", "cupboard_kitchen", "door", "floor_finish",
+        "floor_rough", "no_door", "radiator", "sink", "slope", "socket", "switch", "toilet",
+        "trash", "wall_finish", "wall_no", "wall_plaster", "wall_rough", "windowsill"
 };
 
 bool in_vector(std::vector<int> vec, int item) {
@@ -223,7 +209,7 @@ void MyNdkCamera::on_image_render(cv::Mat &rgb) const {
                     case (int) Rooms::Kitchen:
                         break;
                 }
-                if (obj_iterator->prob > threshold) {
+                if (obj_iterator->prob > 0.8) {
                     detected.insert(obj_iterator->label);
                 }
                 obj_iterator++;
@@ -335,23 +321,6 @@ JNICALL Java_com_tencent_yolov8ncnn_Yolov8Ncnn_openCamera(JNIEnv *env, jobject t
     __android_log_print(ANDROID_LOG_DEBUG, "ncnn", "openCamera %d", facing);
 
     g_camera->open((int) facing);
-
-
-    // get the Class object
-    jclass room_class = env->FindClass("com/tencent/yolov8ncnn/Room");
-    if (room_class == NULL) {
-        __android_log_print(ANDROID_LOG_INFO, "bxll", "name = %\n", "CLASS IS NULL");
-
-    }
-    // Get mName field from the Class object
-    jfieldID fieldID_room_type = env->GetStaticFieldID(room_class, "room_type", "I");
-    // Get values ​​of static variables
-    jint room_type = (jint) env->GetStaticIntField(room_class, fieldID_room_type);
-    // print output
-    __android_log_print(ANDROID_LOG_INFO, "bxll", "name = %\n", room_type);
-    current_room_type = (int) room_type; // and other metadata for percentage count
-
-
 
     return JNI_TRUE;
 }
