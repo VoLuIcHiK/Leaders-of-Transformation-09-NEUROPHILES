@@ -210,7 +210,7 @@ fun CameraScreen(
                 viewModel.isStarted.value = !viewModel.isStarted.value
                 // TODO: Сделать нормальное получение
                 //var room =
-                var a = Vector<Int>()
+                var a = HashMap<Int, Vector<Float>>()
                 if (!viewModel.isStarted.value) {
                     a = yolov8Ncnn.data
                 }

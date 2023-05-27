@@ -209,7 +209,7 @@ void MyNdkCamera::on_image_render(cv::Mat &rgb) const {
                     case (int) Rooms::Kitchen:
                         break;
                 }
-                if (obj_iterator->prob > 0.8) {
+                if (obj_iterator->prob > threshold) {
                     detected.insert(obj_iterator->label);
                 }
                 obj_iterator++;
