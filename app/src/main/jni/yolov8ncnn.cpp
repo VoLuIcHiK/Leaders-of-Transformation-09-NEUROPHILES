@@ -189,7 +189,7 @@ bool in_vector(std::vector<int> vec, int item) {
 void MyNdkCamera::on_image_render(cv::Mat &rgb) const {
     // nanodet
 
-    int threshold = 0.5;
+    int threshold = 0.0;
 
     {
         ncnn::MutexLockGuard g(lock);
@@ -215,6 +215,7 @@ void MyNdkCamera::on_image_render(cv::Mat &rgb) const {
                 } else {
                     // not found
                     detected[obj_iterator->label] = new std::vector<float>;
+                    detected[obj_iterator->label]->push_back(obj_iterator->prob);
                 }
                 obj_iterator++;
             }

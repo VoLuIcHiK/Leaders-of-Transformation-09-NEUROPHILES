@@ -1,8 +1,6 @@
 package ru.mrmarvel.hellofigma.screens
 
 import android.Manifest
-import android.content.pm.ActivityInfo
-import android.hardware.Camera
 import android.os.Build
 import android.util.Log
 import android.view.SurfaceHolder
@@ -23,12 +21,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
@@ -39,7 +35,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -53,6 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.relay.compose.BoxScopeInstanceImpl.align
+import com.tencent.yolov8ncnn.RoomStatistic
 import com.tencent.yolov8ncnn.Yolov8Ncnn
 import ru.mrmarvel.hellofigma.camerabutton.CameraButton
 import ru.mrmarvel.hellofigma.changeflatbutton.ChangeFlatButton
@@ -64,9 +60,8 @@ import ru.mrmarvel.hellofigma.flatlock.FlatLock
 import ru.mrmarvel.hellofigma.flatlock.IsLocked
 import ru.mrmarvel.hellofigma.flatprogress.FlatProgress
 import ru.mrmarvel.hellofigma.roomprogressbutton.RoomProgressButton
-import ru.mrmarvel.hellofigma.util.LockScreenOrientation
 import ru.mrmarvel.hellofigma.util.findActivity
-import java.util.Vector
+
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -147,10 +142,11 @@ fun CameraScreen(
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
-                    Box(Modifier
-                        // FORCE FILL
-                        .fillMaxHeight()
-                        .width(screenWidth * 0.97f)) {
+                    Box(
+                        Modifier
+                            // FORCE FILL
+                            .fillMaxHeight()
+                            .width(screenWidth * 0.97f)) {
                         AndroidView(
                             factory = {
                                 // previewView = PreviewView(it)
@@ -209,12 +205,18 @@ fun CameraScreen(
                 ).show()
                 viewModel.isStarted.value = !viewModel.isStarted.value
                 // TODO: Сделать нормальное получение
-                var a = HashMap<Int, Vector<Float>>()
                 if (!viewModel.isStarted.value) {
-                    a = yolov8Ncnn.data
-                }
-                Log.d("data", a.toString())
+                    var a = yolov8Ncnn.data
+                    var roomStatistic = RoomStatistic()
 
+                    // Записываем среднюю уверенность
+                    for ((key, value) in a) {
+                        if (key in roomStatistic.kitchen.keys && value.size > 10)
+                            roomStatistic.kitchen[key] = value.sum() / value.size;
+                    }
+                    Log.d("data", a.toString())
+                    Log.d("data", roomStatistic.kitchen.toString())
+                }
             }) {
                 CameraButton()
             }
