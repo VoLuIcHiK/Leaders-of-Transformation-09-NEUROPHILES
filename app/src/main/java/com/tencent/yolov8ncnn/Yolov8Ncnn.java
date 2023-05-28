@@ -16,6 +16,8 @@ package com.tencent.yolov8ncnn;
 
 import android.content.res.AssetManager;
 import android.view.Surface;
+
+import java.util.HashMap;
 import java.util.Vector;
 
 public class Yolov8Ncnn
@@ -24,7 +26,7 @@ public class Yolov8Ncnn
     public native boolean openCamera(int facing);
     public native boolean closeCamera();
     public native boolean setOutputWindow(Surface surface);
-    public native Vector<Integer> getData();
+    public native HashMap<Integer, Vector<Float>> getData();
     public native Vector<String> getClasses();
     static {
         System.loadLibrary("yolov8ncnn");

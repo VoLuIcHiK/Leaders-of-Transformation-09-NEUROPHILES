@@ -168,7 +168,7 @@ public:
 //}
 
 
-std::unordered_set<int> detected;
+std::map<int, std::vector<float> *> detected;
 int current_room_type = -1;
 enum class Rooms {
     Bedroom,
@@ -189,7 +189,7 @@ bool in_vector(std::vector<int> vec, int item) {
 void MyNdkCamera::on_image_render(cv::Mat &rgb) const {
     // nanodet
 
-    int threshold = 0.5;
+    int threshold = 0.0;
 
     {
         ncnn::MutexLockGuard g(lock);
@@ -209,8 +209,13 @@ void MyNdkCamera::on_image_render(cv::Mat &rgb) const {
                     case (int) Rooms::Kitchen:
                         break;
                 }
-                if (obj_iterator->prob > threshold) {
-                    detected.insert(obj_iterator->label);
+                if (detected.count(obj_iterator->label) > 0) {
+                    // found
+                    detected[obj_iterator->label]->push_back(obj_iterator->prob);
+                } else {
+                    // not found
+                    detected[obj_iterator->label] = new std::vector<float>;
+                    detected[obj_iterator->label]->push_back(obj_iterator->prob);
                 }
                 obj_iterator++;
             }
@@ -227,7 +232,7 @@ static MyNdkCamera *g_camera = 0;
 
 extern "C" {
 
-JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved){
+JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     __android_log_print(ANDROID_LOG_DEBUG, "ncnn", "JNI_OnLoad");
 
     g_camera = new MyNdkCamera;
@@ -263,18 +268,18 @@ Java_com_tencent_yolov8ncnn_Yolov8Ncnn_loadModel(JNIEnv *env, jobject thiz, jobj
 
     __android_log_print(ANDROID_LOG_DEBUG, "ncnn", "loadModel %p", mgr);
 
-    const char* modeltypes[] =
-    {
-        "m",
-        "n",
-        "s",
-    };
+    const char *modeltypes[] =
+            {
+                    "m",
+                    "n",
+                    "s",
+            };
 
     const int target_sizes[] =
-    {
-        640,
-        640,
-    };
+            {
+                    640,
+                    640,
+            };
 
     const float mean_vals[][3] =
             {
@@ -352,42 +357,69 @@ Java_com_tencent_yolov8ncnn_Yolov8Ncnn_setOutputWindow(JNIEnv *env, jobject thiz
 
 JNIEXPORT jobject  JNICALL
 Java_com_tencent_yolov8ncnn_Yolov8Ncnn_getData(JNIEnv *env, jobject thiz) {
+    jclass hashMapClass = env->FindClass("java/util/HashMap");
+    if (hashMapClass == NULL) {
+        return NULL;                // alternatively, throw exception (recipeNo019)
+    }
+    jmethodID hashMapClassConstructorID = env->GetMethodID(hashMapClass, "<init>", "()V");
+
+    jobject hashMap = env->NewObject(hashMapClass, hashMapClassConstructorID);
+
+    jmethodID putMethodID
+            = env->GetMethodID(
+                    hashMapClass,
+                    "put",
+                    "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
+
+    if(putMethodID == NULL) {
+        return NULL;                           // ...
+    }
+
+
+    jclass floatClass = env->FindClass("java/lang/Float");
+    if (floatClass == NULL) {
+        return NULL;                // alternatively, throw exception (recipeNo019)
+    }
+    jmethodID floatConstructorID = env->GetMethodID(floatClass, "<init>", "(F)V");
+    if (floatConstructorID == NULL) {
+        return NULL;
+    }
+
     jclass vectorClass = env->FindClass("java/util/Vector");
     if (vectorClass == NULL) {
         return NULL;                // alternatively, throw exception (recipeNo019)
     }
-    jclass integerClass = env->FindClass("java/lang/Integer");
-    if (vectorClass == NULL) {
-        return NULL;                // alternatively, throw exception (recipeNo019)
-    }
     jmethodID vectorConstructorID = env->GetMethodID(vectorClass, "<init>", "()V");
-    if(vectorConstructorID == NULL) {
+    if (vectorConstructorID == NULL) {
         return NULL;                // alternatively, throw exception (recipeNo019)
     }
-    jmethodID addMethodID = env->GetMethodID(vectorClass, "add", "(Ljava/lang/Object;)Z" );
-    jmethodID floatConstructorID = env->GetMethodID(integerClass, "<init>", "(I)V");
+    jmethodID addMethodID = env->GetMethodID(vectorClass, "add", "(Ljava/lang/Object;)Z");
 
-    if(floatConstructorID == NULL) {
-        return NULL;
+    jclass intClass = env->FindClass("java/lang/Integer");
+    if (intClass == NULL) {
+        return NULL;                // alternatively, throw exception (recipeNo019)
     }
-    // Outer vector
-    jobject javaVector = env->NewObject(vectorClass, vectorConstructorID);
-    if(javaVector == NULL) {
-        return NULL;                // as above
+    jmethodID intConstructorID = env->GetMethodID(intClass, "<init>", "(I)V");
+    if (intConstructorID == NULL) {
+        return NULL;                // alternatively, throw exception (recipeNo019)
     }
-
-    for(int i : detected) {
+    for (auto const &pair: detected) {
         // Now, we have object created by Float(f)
-        jobject intValue = env->NewObject(integerClass, floatConstructorID, i);
-        if(intValue == NULL) {
-            return NULL;
+        jobject javaVector = env->NewObject(vectorClass, vectorConstructorID);
+        for (float i: *pair.second){
+            jobject floatValue = env->NewObject(floatClass, floatConstructorID, i);
+            env->CallBooleanMethod(javaVector, addMethodID, floatValue);
         }
-        env->CallBooleanMethod(javaVector, addMethodID, intValue);
+        jobject key = env->NewObject(intClass, intConstructorID, pair.first);
+        env->CallObjectMethod(hashMap, putMethodID, key, javaVector);
+
     }
     env->DeleteLocalRef(vectorClass);
-    env->DeleteLocalRef(integerClass);
+    env->DeleteLocalRef(floatClass);
+    env->DeleteLocalRef(hashMapClass);
+    env->DeleteLocalRef(intClass);
     detected.clear();
-    return javaVector;
+    return hashMap;
 }
 
 }
@@ -404,28 +436,30 @@ Java_com_tencent_yolov8ncnn_Yolov8Ncnn_getClasses(JNIEnv *env, jobject thiz) {
         return NULL;                // alternatively, throw exception (recipeNo019)
     }
     jmethodID vectorConstructorID = env->GetMethodID(vectorClass, "<init>", "()V");
-    if(vectorConstructorID == NULL) {
+    if (vectorConstructorID == NULL) {
         return NULL;                // alternatively, throw exception (recipeNo019)
     }
-    jmethodID addMethodID = env->GetMethodID(vectorClass, "add", "(Ljava/lang/Object;)Z" );
-    jmethodID stringConstructorID = env->GetMethodID(stringClass, "<init>", "([BLjava/lang/String;)V");
+    jmethodID addMethodID = env->GetMethodID(vectorClass, "add", "(Ljava/lang/Object;)Z");
+    jmethodID stringConstructorID = env->GetMethodID(stringClass, "<init>",
+                                                     "([BLjava/lang/String;)V");
 
-    if(stringConstructorID == NULL) {
+    if (stringConstructorID == NULL) {
         return NULL;
     }
     // Outer vector
     jobject javaVector = env->NewObject(vectorClass, vectorConstructorID);
-    if(javaVector == NULL) {
+    if (javaVector == NULL) {
         return NULL;                // as above
     }
 
-    for(const char* i : class_names) {
+    for (const char *i: class_names) {
         // Now, we have object created by Float(f)
 
         jbyteArray byteArray = env->NewByteArray(strlen(i));
-        env->SetByteArrayRegion(byteArray, 0, strlen(i), (jbyte*)i);
+        env->SetByteArrayRegion(byteArray, 0, strlen(i), (jbyte *) i);
 
-        jstring newString = (jstring)env->NewObject(stringClass, stringConstructorID, byteArray, env->NewStringUTF("UTF-8"));
+        jstring newString = (jstring) env->NewObject(stringClass, stringConstructorID, byteArray,
+                                                     env->NewStringUTF("UTF-8"));
 
 
 
