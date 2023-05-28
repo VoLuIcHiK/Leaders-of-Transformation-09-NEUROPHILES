@@ -84,7 +84,10 @@
 
 ## <a name="8">Интерфейс приложения </a>
 
-<img width="400" height="600" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/88b13de0-2957-426c-be89-3658a13db2cf">
+
+https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/51875349/a6ca74f9-09a0-4414-a93d-5a571549d49d
+
+
 
 ## <a name="9">Ссылка на сайт </a>
 - [Ссылка на страницу сайта с нашим решением](http://f0798611.xsph.ru/)
