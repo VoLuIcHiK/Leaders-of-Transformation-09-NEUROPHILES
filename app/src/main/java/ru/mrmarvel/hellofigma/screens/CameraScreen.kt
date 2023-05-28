@@ -285,7 +285,7 @@ fun CameraScreen(
 
                     viewModel.roomRealData = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
                     Log.d("data", viewModel.roomRealData.toString())
-                    var roomStatistic = FlatStatistic()
+                    var flatStatistic = FlatStatistic()
 
                     // Записываем среднюю уверенность
                     // TODO: Добавить логику парного соответствия
@@ -293,22 +293,22 @@ fun CameraScreen(
                         // TODO: Сделать выбор комнаты
                         when (roomType) {
                             RoomType.KITCHEN -> {
-                                if (key in roomStatistic.kitchen.keys && value.size > 20)
-                                    roomStatistic.kitchen[key] = value.sum() / value.size
+                                if (key in flatStatistic.kitchen.keys && value.size > 20)
+                                    flatStatistic.kitchen[key] = value.sum() / value.size
                             }
                             RoomType.LIVING -> {
-                                if (key in roomStatistic.living.keys && value.size > 20)
-                                    roomStatistic.living[key] = value.sum() / value.size
+                                if (key in flatStatistic.living.keys && value.size > 20)
+                                    flatStatistic.living[key] = value.sum() / value.size
                             }
 
                             RoomType.HALL -> {
-                                if (key in roomStatistic.hall.keys && value.size > 20)
-                                    roomStatistic.hall[key] = value.sum() / value.size
+                                if (key in flatStatistic.hall.keys && value.size > 20)
+                                    flatStatistic.hall[key] = value.sum() / value.size
                             }
 
                             RoomType.SANITARY -> {
-                                if (key in roomStatistic.sanitary.keys && value.size > 20)
-                                    roomStatistic.sanitary[key] = value.sum() / value.size
+                                if (key in flatStatistic.sanitary.keys && value.size > 20)
+                                    flatStatistic.sanitary[key] = value.sum() / value.size
                             }
 
                         }
@@ -317,31 +317,31 @@ fun CameraScreen(
                     val floor_classes: IntArray = intArrayOf(5, 6)
                     val ceiling_classes: IntArray = intArrayOf(1, 2)
                     val wall_classes: IntArray = intArrayOf(15, 17, 18)
-                    Log.d("data", roomStatistic.kitchen.toString())
+                    Log.d("data", flatStatistic.kitchen.toString())
                     when(roomType){
                         RoomType.KITCHEN -> {
-                            CheckLogic.compareAndResetClasses(roomStatistic.kitchen, floor_classes)
-                            CheckLogic.compareAndResetClasses(roomStatistic.kitchen, ceiling_classes)
-                            CheckLogic.compareAndResetClasses(roomStatistic.kitchen, wall_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.kitchen, floor_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.kitchen, ceiling_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.kitchen, wall_classes)
                         }
                         RoomType.LIVING -> {
-                            CheckLogic.compareAndResetClasses(roomStatistic.living, floor_classes)
-                            CheckLogic.compareAndResetClasses(roomStatistic.living, ceiling_classes)
-                            CheckLogic.compareAndResetClasses(roomStatistic.living, wall_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.living, floor_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.living, ceiling_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.living, wall_classes)
                         }
                         RoomType.HALL -> {
-                            CheckLogic.compareAndResetClasses(roomStatistic.hall, floor_classes)
-                            CheckLogic.compareAndResetClasses(roomStatistic.hall, ceiling_classes)
-                            CheckLogic.compareAndResetClasses(roomStatistic.hall, wall_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.hall, floor_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.hall, ceiling_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.hall, wall_classes)
                         }
                         RoomType.SANITARY -> {
-                            CheckLogic.compareAndResetClasses(roomStatistic.sanitary, floor_classes)
-                            CheckLogic.compareAndResetClasses(roomStatistic.sanitary, ceiling_classes)
-                            CheckLogic.compareAndResetClasses(roomStatistic.sanitary, wall_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.sanitary, floor_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.sanitary, ceiling_classes)
+                            CheckLogic.compareAndResetClasses(flatStatistic.sanitary, wall_classes)
                         }
                     }
                     currentRoomType.value = null
-                    Log.d("data", roomStatistic.kitchen.toString())
+                    Log.d("data", flatStatistic.kitchen.toString())
                 })
             }
         }
