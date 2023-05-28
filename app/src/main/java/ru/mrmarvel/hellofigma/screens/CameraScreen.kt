@@ -72,7 +72,8 @@ import java.util.Vector
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(
-    viewModel: CameraScreenViewModel = hiltViewModel()
+    viewModel: CameraScreenViewModel = hiltViewModel(),
+    navigateToObserveResultScreen: () -> Unit = {}
 ) {
     Text("Тут должна была быть камера, но автор поленился")
     val context = LocalContext.current
@@ -209,6 +210,9 @@ fun CameraScreen(
                     Toast.LENGTH_SHORT
                 ).show()
                 viewModel.isStarted.value = !viewModel.isStarted.value
+                if (!viewModel.isStarted.value) {
+                    navigateToObserveResultScreen()
+                }
                 // TODO: Сделать нормальное получение
                 //var room =
                 if (!viewModel.isStarted.value) {

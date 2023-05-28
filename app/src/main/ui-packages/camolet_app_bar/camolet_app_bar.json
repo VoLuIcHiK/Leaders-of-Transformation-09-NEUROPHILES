@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "jzuwoTvIOeRK3P1G8NpduC",
     "node": "81:154",
-    "version": "3532068512",
+    "version": "3560661488",
     "component-id": "1fef9730d255a84e3e2f14065c5117eece87c5c9"
   },
   "default": "CamoletAppBar",
@@ -101,7 +101,7 @@
               "saturation": "0.027888446215139345",
               "value": "0.984313725490196"
             },
-            "text-content": "МОНИТОРИНГ",
+            "text-content": "$appBarText",
             "overflow": "visible",
             "text-size": "20.0",
             "line-height": "1.2600000381469727",
@@ -133,6 +133,11 @@
       "required": false,
       "description": ""
     },
+    "appBarText": {
+      "data-type": "text",
+      "required": false,
+      "description": ""
+    },
     "onProfileClick": {
       "data-type": "void-callback",
       "required": false,
@@ -145,6 +150,9 @@
       "size": {
         "width": 351.0,
         "height": 75.0
+      },
+      "parameters": {
+        "appBarText": "МОНИТОРИНГ"
       }
     }
   ],

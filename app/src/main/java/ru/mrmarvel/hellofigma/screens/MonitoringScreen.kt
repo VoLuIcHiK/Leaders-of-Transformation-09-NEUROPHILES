@@ -62,7 +62,8 @@ fun MonitoringScreen(
                 },
                 onProfileClick = {
                     Toast.makeText(context, "Открыть профиль!", Toast.LENGTH_SHORT).show()
-                }
+                },
+                appBarText = "МОНИТОРИНГ"
             )
         },
         bottomBar = {

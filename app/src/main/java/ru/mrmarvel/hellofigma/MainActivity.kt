@@ -44,6 +44,7 @@ import ru.mrmarvel.hellofigma.data.SharedViewModel
 import ru.mrmarvel.hellofigma.monitoringitembuildingnew.MonitoringItemBuildingNew
 import ru.mrmarvel.hellofigma.screens.CameraScreen
 import ru.mrmarvel.hellofigma.screens.MonitoringScreen
+import ru.mrmarvel.hellofigma.screens.ObserveResultScreen
 import ru.mrmarvel.hellofigma.ui.theme.HelloFigmaTheme
 
 val elem = @Composable {
@@ -80,14 +81,24 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable("camera_screen") {
-                            TextView(context)
                             CameraScreen(
+                                navigateToObserveResultScreen = {
+                                    navController.navigate("observe_result_screen") {
+                                        popUpTo("monitoring_screen") { inclusive = true }
+                                    }
+                                }
                                 // navigateToMonitoringScreen = {
-                                //     navController.navigate("monitoring_screen", navOptions = NavOptions.Builder().)
+                                //     navController.navigate("monitoring_screen", navOptions =
+                            //     NavOptions.Builder().)
                                 // }
                             )
-                            val a = {
-                            }
+                        }
+                        composable("observe_result_screen") {
+                            ObserveResultScreen(sharedViewModel, navigateToMonitoringScreen = {
+                                navController.navigate("monitoring_screen") {
+                                    popUpTo("monitoring_screen") { inclusive = true }
+                                }
+                            })
                         }
                     }
                 }
