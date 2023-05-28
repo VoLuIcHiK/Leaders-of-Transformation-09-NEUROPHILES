@@ -1,6 +1,7 @@
 ## <p align="center"> ЗАДАЧА №9 ИНТЕРАКТИВНАЯ ПЛАТФОРМА ДЛЯ МОНИТОРИНГА ВНУТРЕННЕЙ ОТДЕЛКИ КВАРТИРЫ  </p>
 <p align="center">
-<img width="743" alt="photo" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/25364f68-ae39-4eb4-aef5-40316ef9cd76">
+<img width="743" alt="photo" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/6f6e9ae0-6cec-4054-963f-833040f76ae2">
+
 </p>
 
 
@@ -34,22 +35,22 @@
 
 Для определения местоположения и анализа готовности помещения мы решили придумали алгоритм, представленный на фото ниже.
 <p align="center">
-<img width="600" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/14fc8477-ff86-43be-baa2-db81a9e695c0">
+<img width="600" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/24ccfeda-c71c-459e-80cb-94aa9160179e">
 </p>
 
 Ниже представленна физическая модель нашей базы данных: 
 <p align="center">
-<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/a3126953-5b2f-4197-a05e-8ca5e54a647c">
+<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/79ae1834-bd4f-4bb1-b2f4-fcf276de2bb5">
 </p>
+
 
 ## <a name="11">Работа модели </a>
 Ниже представлены скрины работы нашей обученной модели:
 <p align="center">
-<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/f7d8dd87-f202-4a5e-9c36-523241a5afd9">
-<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/c4de33df-dfbe-49c5-a496-90df97c82116">
-<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/58c02db5-8187-4d1a-b10c-9c02fdafb6e4">
+<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/5bcdd6ba-530b-48c6-baad-c277a073a2c6">
+<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/62fca6c1-a7cc-4940-82f4-19d2f535dc20">
+<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/0fa6ee2b-85aa-4e6f-880f-777be0685446">
 </p>
-
 
 ## <a name="3">Результат разработки </a>
 
@@ -94,12 +95,13 @@
 3. Открыть приложение, нажав на появившуюся иконку.
 
 ## <a name="8">Интерфейс приложения </a>
-https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/025c9275-20a8-43fd-a9a9-aed2c60d2b92
+https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/36cf550d-4740-421e-85bc-f42d60641680
+
 
 ## <a name="9">Ссылка на сайт </a>
 - [Ссылка на наш сайт "СтройКонтроль"](http://u1988986.isp.regruhosting.ru/login)
 <p align="center">
-<img width="600" height="400" alt="Главный экран" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/ff001160-895a-4ad1-902b-c0d7f8b3e93c">
+<img width="600" height="400" alt="Главный экран" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/df928807-da16-45e4-b9cc-8eec3b2a9126">
 </p>
 
 ## <a name="10">Ссылка на google drive </a>
