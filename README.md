@@ -21,6 +21,7 @@
 7. [Запуск](#7)
 8. [Интерфейс приложения](#8)
 9. [Ссылка на сайт](#9)
+10. [Ссылка на google drive](#10)
 
 ## <a name="1"> Задание </a>
 
@@ -95,3 +96,6 @@ https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/909
 <p align="center">
 <img width="600" height="400" alt="Главный экран" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/ff001160-895a-4ad1-902b-c0d7f8b3e93c">
 </p>
+
+## <a name="10">Ссылка на google drive </a>
+- [Ссылка на google drive](https://drive.google.com/drive/folders/1gQXvqQinVik9TC0aIwWMTdtwKi4GV6qq)
