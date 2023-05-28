@@ -190,39 +190,40 @@ void MyNdkCamera::on_image_render(cv::Mat &rgb) const {
     // nanodet
 
     int threshold = 0.0;
-
-    {
+    if (this->state){
         ncnn::MutexLockGuard g(lock);
-        if (g_yolo) {
+        {
+            if (g_yolo) {
 //            std::vector<SimpleObject> s_objects;
-            std::vector<Object> objects;
-            g_yolo->detect(rgb, objects);
-            g_yolo->draw(rgb, objects);
-            std::vector<Object>::iterator obj_iterator = objects.begin();
-            while (obj_iterator != objects.end()) {
-                switch (current_room_type) {
-                    //TODO: MAKE threshold logic
-                    case (int) Rooms::Bathroom:
-                        break;
-                    case (int) Rooms::Bedroom:
-                        break;
-                    case (int) Rooms::Kitchen:
-                        break;
+                std::vector<Object> objects;
+                g_yolo->detect(rgb, objects);
+                g_yolo->draw(rgb, objects);
+                std::vector<Object>::iterator obj_iterator = objects.begin();
+                while (obj_iterator != objects.end()) {
+                    switch (current_room_type) {
+                        //TODO: MAKE threshold logic
+                        case (int) Rooms::Bathroom:
+                            break;
+                        case (int) Rooms::Bedroom:
+                            break;
+                        case (int) Rooms::Kitchen:
+                            break;
+                    }
+                    if (detected.count(obj_iterator->label) > 0) {
+                        // found
+                        detected[obj_iterator->label]->push_back(obj_iterator->prob);
+                    } else {
+                        // not found
+                        detected[obj_iterator->label] = new std::vector<float>;
+                        detected[obj_iterator->label]->push_back(obj_iterator->prob);
+                    }
+                    obj_iterator++;
                 }
-                if (detected.count(obj_iterator->label) > 0) {
-                    // found
-                    detected[obj_iterator->label]->push_back(obj_iterator->prob);
-                } else {
-                    // not found
-                    detected[obj_iterator->label] = new std::vector<float>;
-                    detected[obj_iterator->label]->push_back(obj_iterator->prob);
-                }
-                obj_iterator++;
-            }
 
 //            all_frames.push_back(s_objects);
-        } else {
-            draw_unsupported(rgb);
+            } else {
+                draw_unsupported(rgb);
+            }
         }
     }
     draw_fps(rgb);
@@ -332,7 +333,6 @@ JNICALL Java_com_tencent_yolov8ncnn_Yolov8Ncnn_openCamera(JNIEnv *env, jobject t
 
 // public native boolean closeCamera();
 JNIEXPORT jboolean
-
 JNICALL Java_com_tencent_yolov8ncnn_Yolov8Ncnn_closeCamera(JNIEnv *env, jobject thiz) {
     __android_log_print(ANDROID_LOG_DEBUG, "ncnn", "closeCamera");
 
@@ -340,6 +340,14 @@ JNICALL Java_com_tencent_yolov8ncnn_Yolov8Ncnn_closeCamera(JNIEnv *env, jobject 
 
     return JNI_TRUE;
 }
+
+JNIEXPORT jboolean
+JNICALL Java_com_tencent_yolov8ncnn_Yolov8Ncnn_changeState(JNIEnv *env, jobject thiz) {
+    __android_log_print(ANDROID_LOG_DEBUG, "ncnn", "ChangeState");
+    g_camera->state = !g_camera->state;
+    return JNI_TRUE;
+}
+
 
 // public native boolean setOutputWindow(Surface surface);
 JNIEXPORT jboolean

@@ -116,7 +116,7 @@ fun CameraScreen(
     val currentRoomType = remember {viewModel.currentRoomType}
     val isFlatLocked = remember {viewModel.isFlatLocked}
     val isFlatChangeWindowShown = remember { mutableStateOf(false) }
-    var yolov8Ncnn: Yolov8Ncnn? = null;
+    var yolov8Ncnn: Yolov8Ncnn? = Yolov8Ncnn();
     // val camerasCount = Camera.getNumberOfCameras()
     // for (i in 0 until camerasCount) {
     //     var camera: Camera? = Camera.open(i)
@@ -134,14 +134,14 @@ fun CameraScreen(
             .background(Color.Black)
             .fillMaxSize()
     ) {
-        // TODO: Посмотреть, нужно ли вызывать несколько раз. Спросить у Сереги как работает Surface
+        //yolov8Ncnn?.changeState()
         if (permissionState.allPermissionsGranted){
             Box(modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Black),
                 contentAlignment = Alignment.CenterStart
             ) {
-                AnimatedVisibility(visible = remember {viewModel.isStarted}.value,
+                AnimatedVisibility(visible = true,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
@@ -157,16 +157,16 @@ fun CameraScreen(
                                 SurfaceView(context).apply {
                                     holder.addCallback(object : SurfaceHolder.Callback {
                                         override fun surfaceCreated(p0: SurfaceHolder) {
-                                            if (yolov8Ncnn == null) {
+                                            if (yolov8Ncnn != null) {
                                                 Log.d("model", "Loaded")
-                                                yolov8Ncnn = Yolov8Ncnn()
+                                                //yolov8Ncnn = Yolov8Ncnn()
+                                                Log.d("model", (yolov8Ncnn == null).toString())
                                                 yolov8Ncnn?.loadModel(
                                                     context.findActivity().assets,
                                                     0,
                                                     0
                                                 )
                                             }
-
                                         }
 
                                         override fun surfaceChanged(
@@ -206,21 +206,9 @@ fun CameraScreen(
                     Toast.LENGTH_SHORT
                 ).show()
                 viewModel.isStarted.value = !viewModel.isStarted.value
+                Log.d("model", (yolov8Ncnn == null).toString())
+                yolov8Ncnn?.changeState()
                 if (!viewModel.isStarted.value) {
-//                    yolov8Ncnn?.closeCamera()
-//                    viewModel.roomRealData = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
-//                    Log.d("data", viewModel.roomRealData.toString())
-//                    var flatStatistic = FlatStatistic()
-//
-//                    // Записываем среднюю уверенность
-//                    // TODO: Добавить логику парного соответствия
-//                    for ((key, value) in viewModel.roomRealData) {
-//                        // TODO: Сделать выбор комнаты
-//                        if (key in flatStatistic.kitchen.keys && value.size > 20)
-//                            flatStatistic.kitchen[key] = value.sum() / value.size
-//                    }
-//                    Log.d("data", flatStatistic.kitchen.toString())
-//                    processStatistic()
                     navigateToObserveResultScreen()
                 }
             }) {
@@ -281,6 +269,7 @@ fun CameraScreen(
                 contentAlignment = Alignment.BottomEnd
             ) {
                 EndRoomButton(onItemClick = {
+                    yolov8Ncnn?.changeState()
                     var roomType = viewModel.currentRoomType.value
 
                     viewModel.roomRealData = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
@@ -365,6 +354,9 @@ fun CameraScreen(
                 ) {
                     items(roomsNames.size) { i ->
                         RoomProgressButton(roomName = roomsNames[i], progressText = "${(i+1) * 25}%", onItemClick = {
+                            if (viewModel.isStarted.value) {
+                                yolov8Ncnn?.changeState()
+                            }
                             viewModel.currentRoomType.value = RoomType.toEnum(roomsNames[i])
                         })
                     }
