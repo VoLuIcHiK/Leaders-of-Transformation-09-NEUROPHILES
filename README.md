@@ -33,7 +33,12 @@
 
 Для определения местоположения и анализа готовности помещения мы решили придумали алгоритм, представленный на фото ниже.
 <p align="center">
-<img width="531" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/14fc8477-ff86-43be-baa2-db81a9e695c0">
+<img width="600" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/14fc8477-ff86-43be-baa2-db81a9e695c0">
+</p>
+
+Ниже представленна физическая модель нашей базы данных: 
+<p align="center">
+<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/a3126953-5b2f-4197-a05e-8ca5e54a647c">
 </p>
 
 ## <a name="3">Результат разработки </a>
@@ -77,14 +82,10 @@
   
 
 ## <a name="7">Запуск </a>
-Установить библиотеки. Есть 3 возможности запуска:
-- Запуск десктопной версии. Для этого необходимо установить зависимости (в папке qtpure) `pip install -r requirements.txt`. Затем скачать Releases версию и запустить exe.
-- Запуск на хостинге http://f0798611.xsph.ru/ (все развернуто на MTS Cloud). Доступно только 1 видео для демонстрации.
-- Локальный запуск нейросети. Необходимо загрузить папку nn, установить зависимости, создать папку inference_videos/videos и положить туда видео. После обработки готовый файл появится в films_with_audiodescr.
-
-Команда для запуска (source) из папки проекта
-`py app.py`  
-Также есть возможность запустить приложение в виде .exe файла.
+Для запуска мобильного приложения необходимо:
+1. Скачать с нашего репозитория APK;
+2. Дождаться успешной установки приложения;
+3. Открыть приложение, нажав на появившуюся иконку.
 
 ## <a name="8">Интерфейс приложения </a>
 https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/025c9275-20a8-43fd-a9a9-aed2c60d2b92
