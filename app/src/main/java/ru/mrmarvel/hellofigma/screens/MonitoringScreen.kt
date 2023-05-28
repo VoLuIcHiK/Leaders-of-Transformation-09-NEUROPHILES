@@ -12,12 +12,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.flowlayout.FlowColumn
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
@@ -31,6 +33,7 @@ import ru.mrmarvel.hellofigma.monitoringitembuildingnew.Open
 import ru.mrmarvel.hellofigma.monitoringitembuildingsubitem.MonitoringItemBuildingSubItem
 import ru.mrmarvel.hellofigma.monthmonitoringlabel.MonthLabel
 import java.util.Calendar
+import kotlinx.coroutines.*
 
 
 val startingDate: Calendar = Calendar.Builder().setDate(2023, 5, 22).build()
@@ -52,6 +55,12 @@ fun MonitoringScreen(
     sharedViewModel: SharedViewModel = SharedViewModel(),
     navigateToCameraScreen: () -> Unit
 ) {
+    LaunchedEffect(true) {
+        launch {
+            sharedViewModel.projectRepository.getAll()
+        }
+    }
+
     // var monitoringItems = listOf<MonitoringBuildingGroup>(MonitoringBuildingGroupProvider.monitoringItems[0])
     val context = LocalContext.current
     Scaffold(
