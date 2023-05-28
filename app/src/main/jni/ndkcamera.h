@@ -40,6 +40,7 @@ public:
     virtual void on_image(const unsigned char* nv21, int nv21_width, int nv21_height) const;
 
 public:
+    bool state = false;
     int camera_facing;
     int camera_orientation;
 
