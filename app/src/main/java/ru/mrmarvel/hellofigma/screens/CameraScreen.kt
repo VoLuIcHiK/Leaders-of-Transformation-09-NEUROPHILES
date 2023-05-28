@@ -271,7 +271,7 @@ fun CameraScreen(
             }
         }
         val currentRoomType = remember {viewModel.currentRoomType}
-        AnimatedVisibility(visible = currentRoomType.value != "",
+        AnimatedVisibility(visible = currentRoomType.value != null,
             enter = fadeIn(),
             exit = fadeOut()
         ) {
@@ -281,14 +281,11 @@ fun CameraScreen(
                 contentAlignment = Alignment.BottomEnd
             ) {
                 EndRoomButton(onItemClick = {
-                    currentRoomType.value = ""
-
-                    // TODO: Изменять roomType по кнопке!
-                    var roomType = RoomType.KITCHEN;
+                    var roomType = viewModel.currentRoomType.value
 
                     viewModel.roomRealData = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
                     Log.d("data", viewModel.roomRealData.toString())
-                    var roomStatistic = RoomStatistic()
+                    var roomStatistic = FlatStatistic()
 
                     // Записываем среднюю уверенность
                     // TODO: Добавить логику парного соответствия
@@ -343,13 +340,14 @@ fun CameraScreen(
                             CheckLogic.compareAndResetClasses(roomStatistic.sanitary, wall_classes)
                         }
                     }
+                    currentRoomType.value = null
                     Log.d("data", roomStatistic.kitchen.toString())
                 })
             }
         }
         val roomsNames = listOf("Санузел", "Коридор", "Жилая", "Кухня")
         AnimatedVisibility(
-            visible = remember { viewModel.currentRoomType}.value == "",
+            visible = remember { viewModel.currentRoomType}.value == null,
             enter = expandVertically(expandFrom = Alignment.Top),
             exit = shrinkVertically(shrinkTowards = Alignment.Top),
         ) {
@@ -367,7 +365,7 @@ fun CameraScreen(
                 ) {
                     items(roomsNames.size) { i ->
                         RoomProgressButton(roomName = roomsNames[i], progressText = "${(i+1) * 25}%", onItemClick = {
-                            viewModel.currentRoomType.value = roomsNames[i]
+                            viewModel.currentRoomType.value = RoomType.toEnum(roomsNames[i])
                         })
                     }
                 }
