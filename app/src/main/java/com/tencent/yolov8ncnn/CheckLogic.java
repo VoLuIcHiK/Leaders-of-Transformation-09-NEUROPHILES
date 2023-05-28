@@ -20,7 +20,7 @@ public class CheckLogic {
     public static void compareAndResetClasses(HashMap<Integer, Float> room, int[] classes){
         float[] probs = new float[classes.length];
         for(int i = 0; i < probs.length; i++){
-            probs[i] = room.get(i);
+            probs[i] = room.get(classes[i]);
          }
         int more_probable_class = getIndexOfMaximum(probs);
         for(int i = 0; i < classes.length; i++){
