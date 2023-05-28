@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import ru.mrmarvel.hellofigma.domain.repository.CustomCameraRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.HashMap
 import java.util.Vector
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class CameraScreenViewModel @Inject constructor(
     val currentFlatNumber = mutableStateOf("128")
     val isFlatLocked = mutableStateOf(false)
     var roomPlannedData = Vector<Int>()
-    var roomRealData = Vector<Int>()
+    var roomRealData = HashMap<Int, Vector<Float>>()
 
     fun showCameraPreview(
         previewView: PreviewView,

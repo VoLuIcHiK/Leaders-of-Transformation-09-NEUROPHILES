@@ -204,13 +204,13 @@ fun CameraScreen(
                 viewModel.isStarted.value = !viewModel.isStarted.value
                 if (!viewModel.isStarted.value) {
                     yolov8Ncnn?.closeCamera()
-                    var a = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
-                    Log.d("data", a.toString())
+                    viewModel.roomRealData = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
+                    Log.d("data", viewModel.roomRealData.toString())
                     var roomStatistic = RoomStatistic()
 
                     // Записываем среднюю уверенность
                     // TODO: Добавить логику парного соответствия
-                    for ((key, value) in a) {
+                    for ((key, value) in viewModel.roomRealData) {
                         // TODO: Сделать выбор комнаты
                         if (key in roomStatistic.kitchen.keys && value.size > 20)
                             roomStatistic.kitchen[key] = value.sum() / value.size
