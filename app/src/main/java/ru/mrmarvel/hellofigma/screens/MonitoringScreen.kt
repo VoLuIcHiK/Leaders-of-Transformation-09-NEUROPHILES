@@ -59,6 +59,8 @@ fun MonitoringScreen(
     LaunchedEffect(true) {
         launch {
             sharedViewModel.projectRepository.getAll()
+            sharedViewModel.monitoringBuildingGroupList.clear()
+            sharedViewModel.monitoringBuildingGroupList += sharedViewModel._monitoringBuildingGroupList
             for (project in sharedViewModel.projectRepository.projects.value) {
                 sharedViewModel.monitoringBuildingGroupList.add(
                     MonitoringBuildingGroup(

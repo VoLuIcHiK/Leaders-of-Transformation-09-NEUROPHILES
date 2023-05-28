@@ -30,13 +30,14 @@ object MonitoringBuildingGroupProvider {
 }
 
 class SharedViewModel: ViewModel() {
-    private val _monitoringBuildingGroupList = mutableStateListOf<MonitoringBuildingGroup>()
-    val monitoringBuildingGroupList: SnapshotStateList<MonitoringBuildingGroup> = _monitoringBuildingGroupList
+    val _monitoringBuildingGroupList = mutableStateListOf<MonitoringBuildingGroup>()
+    val monitoringBuildingGroupList: SnapshotStateList<MonitoringBuildingGroup> = mutableStateListOf()
     val openedGroups: SnapshotStateList<MonitoringBuildingGroup> = mutableStateListOf()
     val projectRepository = ProjectRepository(ProjectSource())
     init {
-        monitoringBuildingGroupList += MonitoringBuildingGroupProvider.monitoringItems
-        if (monitoringBuildingGroupList.size > 0) openedGroups.add(monitoringBuildingGroupList[0])
+        _monitoringBuildingGroupList += MonitoringBuildingGroupProvider.monitoringItems
+        if (_monitoringBuildingGroupList.size > 0) openedGroups.add(_monitoringBuildingGroupList[0])
+        monitoringBuildingGroupList += _monitoringBuildingGroupList
     }
 
     fun addBuildingGroup(group: MonitoringBuildingGroup) {
