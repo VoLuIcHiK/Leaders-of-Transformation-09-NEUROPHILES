@@ -85,4 +85,4 @@
 https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/025c9275-20a8-43fd-a9a9-aed2c60d2b92
 
 ## <a name="9">Ссылка на сайт </a>
-- [Ссылка на наш сайт "СтройКонтроль"]([http://f0798611.xsph.ru/](http://u1988986.isp.regruhosting.ru/login))
+- [Ссылка на наш сайт "СтройКонтроль"](http://u1988986.isp.regruhosting.ru/login)
