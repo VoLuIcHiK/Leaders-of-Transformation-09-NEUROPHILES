@@ -63,6 +63,8 @@ import ru.mrmarvel.hellofigma.flatlock.IsLocked
 import ru.mrmarvel.hellofigma.flatprogress.FlatProgress
 import ru.mrmarvel.hellofigma.roomprogressbutton.RoomProgressButton
 import ru.mrmarvel.hellofigma.util.findActivity
+import java.util.HashMap
+import java.util.Vector
 
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -111,6 +113,7 @@ fun CameraScreen(
     val currentFlatNumber = remember {viewModel.currentFlatNumber}
     val isFlatLocked = remember {viewModel.isFlatLocked}
     val isFlatChangeWindowShown = remember { mutableStateOf(false) }
+    var yolov8Ncnn: Yolov8Ncnn? = null;
     // val camerasCount = Camera.getNumberOfCameras()
     // for (i in 0 until camerasCount) {
     //     var camera: Camera? = Camera.open(i)
@@ -129,12 +132,6 @@ fun CameraScreen(
             .fillMaxSize()
     ) {
         // TODO: Посмотреть, нужно ли вызывать несколько раз. Спросить у Сереги как работает Surface
-        var yolov8Ncnn = Yolov8Ncnn();
-        yolov8Ncnn?.loadModel(
-            context.findActivity().assets,
-            0,
-            0
-        );
         if (permissionState.allPermissionsGranted){
             Box(modifier = Modifier
                 .fillMaxSize()
@@ -154,11 +151,11 @@ fun CameraScreen(
                                 // previewView = PreviewView(it)
                                 // viewModel.showCameraPreview(previewView, lifecycleOwner)
                                 // previewView
-                                var yolov8Ncnn: Yolov8Ncnn? = null
                                 SurfaceView(context).apply {
                                     holder.addCallback(object : SurfaceHolder.Callback {
                                         override fun surfaceCreated(p0: SurfaceHolder) {
                                             if (yolov8Ncnn == null) {
+                                                Log.d("model", "Loaded")
                                                 yolov8Ncnn = Yolov8Ncnn()
                                                 yolov8Ncnn?.loadModel(
                                                     context.findActivity().assets,
@@ -180,6 +177,7 @@ fun CameraScreen(
                                         }
 
                                         override fun surfaceDestroyed(p0: SurfaceHolder) {
+                                            Log.d("camera", "CLose in surface")
                                             yolov8Ncnn?.closeCamera()
                                             yolov8Ncnn = null
                                         }
@@ -207,12 +205,8 @@ fun CameraScreen(
                 ).show()
                 viewModel.isStarted.value = !viewModel.isStarted.value
                 if (!viewModel.isStarted.value) {
-                    navigateToObserveResultScreen()
-                }
-                // TODO: Сделать нормальное получение
-                //var room =
-                if (!viewModel.isStarted.value) {
-                    var a = yolov8Ncnn.data
+                    yolov8Ncnn?.closeCamera()
+                    var a = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
                     Log.d("data", a.toString())
                     var roomStatistic = RoomStatistic()
 
@@ -221,9 +215,10 @@ fun CameraScreen(
                     for ((key, value) in a) {
                         // TODO: Сделать выбор комнаты
                         if (key in roomStatistic.kitchen.keys && value.size > 20)
-                            roomStatistic.kitchen[key] = value.sum() / value.size;
+                            roomStatistic.kitchen[key] = value.sum() / value.size
                     }
                     Log.d("data", roomStatistic.kitchen.toString())
+                    navigateToObserveResultScreen()
                 }
             }) {
                 CameraButton()
