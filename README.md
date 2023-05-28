@@ -33,7 +33,7 @@
 
 Для определения местоположения и анализа готовности помещения мы решили придумали алгоритм, представленный на фото ниже.
 <p align="center">
-<img width="399" alt="Снимок экрана 2023-05-28 в 10 56 55" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/913e5a03-8cb8-4c20-884c-f2aa08b2505c">
+<img width="531" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/14fc8477-ff86-43be-baa2-db81a9e695c0">
 </p>
 
 ## <a name="3">Результат разработки </a>

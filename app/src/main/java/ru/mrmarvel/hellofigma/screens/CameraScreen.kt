@@ -66,7 +66,6 @@ import ru.mrmarvel.hellofigma.util.findActivity
 import java.util.HashMap
 import java.util.Vector
 
-
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(
@@ -177,7 +176,6 @@ fun CameraScreen(
                                         }
 
                                         override fun surfaceDestroyed(p0: SurfaceHolder) {
-                                            Log.d("camera", "CLose in surface")
                                             yolov8Ncnn?.closeCamera()
                                             yolov8Ncnn = null
                                         }
