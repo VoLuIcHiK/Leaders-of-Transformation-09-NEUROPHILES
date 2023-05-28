@@ -92,3 +92,6 @@ https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/909
 
 ## <a name="9">Ссылка на сайт </a>
 - [Ссылка на наш сайт "СтройКонтроль"](http://u1988986.isp.regruhosting.ru/login)
+<p align="center">
+<img width="600" height="400" alt="Главный экран" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/ff001160-895a-4ad1-902b-c0d7f8b3e93c">
+</p>
