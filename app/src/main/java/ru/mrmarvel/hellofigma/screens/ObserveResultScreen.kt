@@ -75,13 +75,13 @@ fun ObserveResultScreen(
         Surface(
             Modifier.padding(scaffoldPadding),
         ) {
-            ObserveResultMain()
+            ObserveResultMain(sharedViewModel, navigateToMonitoringScreen)
         }
     }
 }
 @Preview
 @Composable
-private fun ObserveResultMain(sharedViewModel: SharedViewModel = SharedViewModel()) {
+private fun ObserveResultMain(sharedViewModel: SharedViewModel = SharedViewModel(), navigateToMonitoringScreen: () -> Unit = {}) {
     Surface(Modifier.fillMaxWidth()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -91,7 +91,9 @@ private fun ObserveResultMain(sharedViewModel: SharedViewModel = SharedViewModel
             BackButton(
                 Modifier
                     .align(Alignment.Start)
-                    .padding(bottom = 8.dp))
+                    .padding(bottom = 8.dp),
+                onItemClick = navigateToMonitoringScreen
+            )
             VideoFrame()
             val elementModifier = Modifier.padding(vertical = 3.dp)
             Column(Modifier.padding(top = 24.dp)) {
