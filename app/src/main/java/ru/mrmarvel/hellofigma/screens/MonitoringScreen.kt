@@ -101,7 +101,7 @@ fun MonitoringScreen(
             ) {
                 MakeVideo(Modifier,  onMakeVideoClicked = {
                     // Toast.makeText(context, "Создать видео!", Toast.LENGTH_SHORT).show()
-                    navigateToCameraScreen()
+                    navigateToObserverStartScreen()
                 })
             }
         }
