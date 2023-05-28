@@ -207,14 +207,16 @@ fun CameraScreen(
                 // TODO: Сделать нормальное получение
                 if (!viewModel.isStarted.value) {
                     var a = yolov8Ncnn.data
+                    Log.d("data", a.toString())
                     var roomStatistic = RoomStatistic()
 
                     // Записываем среднюю уверенность
+                    // TODO: Добавить логику парного соответствия
                     for ((key, value) in a) {
-                        if (key in roomStatistic.kitchen.keys && value.size > 10)
+                        // TODO: Сделать выбор комнаты
+                        if (key in roomStatistic.kitchen.keys && value.size > 20)
                             roomStatistic.kitchen[key] = value.sum() / value.size;
                     }
-                    Log.d("data", a.toString())
                     Log.d("data", roomStatistic.kitchen.toString())
                 }
             }) {

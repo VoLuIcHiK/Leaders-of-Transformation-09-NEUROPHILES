@@ -10,7 +10,7 @@ enum RoomType{
 }
 
 public class RoomStatistic {
-    public static HashMap<Integer, Float> kitchen = new HashMap<Integer, Float>(){{
+    public HashMap<Integer, Float> kitchen = new HashMap<Integer, Float>(){{
         put(1, 0.f);
         put(2, 0.f);
         put(3, 0.f);
@@ -29,7 +29,7 @@ public class RoomStatistic {
         put(19, 0.f);
     }};
 
-    public static HashMap<Integer, Float> living = new HashMap<Integer, Float>(){{
+    public HashMap<Integer, Float> living = new HashMap<Integer, Float>(){{
         put(1, 0.f);
         put(2, 0.f);
         put(4, 0.f);
@@ -47,7 +47,7 @@ public class RoomStatistic {
         put(19, 0.f);
     }};
 
-    public static HashMap<Integer, Float> hall = new HashMap<Integer, Float>(){{
+    public HashMap<Integer, Float> hall = new HashMap<Integer, Float>(){{
         put(1, 0.f);
         put(2, 0.f);
         put(4, 0.f);
@@ -62,7 +62,7 @@ public class RoomStatistic {
         put(18, 0.f);
     }};
 
-    public static HashMap<Integer, Float> Sanitary = new HashMap<Integer, Float>(){{
+    public HashMap<Integer, Float> Sanitary = new HashMap<Integer, Float>(){{
         put(0, 0.f);
         put(1, 0.f);
         put(2, 0.f);
