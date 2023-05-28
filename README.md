@@ -14,14 +14,15 @@
 ## Оглавление
 1. [Задание](#1)
 2. [Решение](#2)
-3. [Результат разработки](#3)
-4. [Пример работы](#4)
-5. [Уникальность нашего решения](#5)
-6. [Стек](#6)
-7. [Запуск](#7)
-8. [Интерфейс приложения](#8)
-9. [Ссылка на сайт](#9)
-10. [Ссылка на google drive](#10)
+3. [Работа модели](#11)
+4. [Результат разработки](#3)
+5. [Пример работы](#4)
+6. [Уникальность нашего решения](#5)
+7. [Стек](#6)
+8. [Запуск](#7)
+9. [Интерфейс приложения](#8)
+10. [Ссылка на сайт](#9)
+11. [Ссылка на google drive](#10)
 
 ## <a name="1"> Задание </a>
 
@@ -41,6 +42,15 @@
 <p align="center">
 <img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/a3126953-5b2f-4197-a05e-8ca5e54a647c">
 </p>
+
+## <a name="11">Работа модели </a>
+Ниже представлены скрины работы нашей обученной модели:
+<p align="center">
+<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/f7d8dd87-f202-4a5e-9c36-523241a5afd9">
+<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/c4de33df-dfbe-49c5-a496-90df97c82116">
+<img width="600" height="400" alt="image" src="https://github.com/VoLuIcHiK/Leaders-of-Transformation-09-NEUROPHILES/assets/90902903/58c02db5-8187-4d1a-b10c-9c02fdafb6e4">
+</p>
+
 
 ## <a name="3">Результат разработки </a>
 
