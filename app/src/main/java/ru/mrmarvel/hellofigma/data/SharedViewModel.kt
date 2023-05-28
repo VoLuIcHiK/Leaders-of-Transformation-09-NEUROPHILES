@@ -5,6 +5,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import ru.mrmarvel.hellofigma.data.models.MonitoringBuildingGroup
 import ru.mrmarvel.hellofigma.data.models.MonitoringBuildingItem
+import ru.mrmarvel.hellofigma.data.repository.ProjectRepository
+import ru.mrmarvel.hellofigma.data.sources.ProjectSource
 import ru.mrmarvel.hellofigma.screens.startingDate
 import java.util.Calendar
 
@@ -31,8 +33,13 @@ class SharedViewModel: ViewModel() {
     private val _monitoringBuildingGroupList = mutableStateListOf<MonitoringBuildingGroup>()
     val monitoringBuildingGroupList: SnapshotStateList<MonitoringBuildingGroup> = _monitoringBuildingGroupList
     val openedGroups: SnapshotStateList<MonitoringBuildingGroup> = mutableStateListOf()
+    val projectRepository = ProjectRepository(ProjectSource())
     init {
         monitoringBuildingGroupList += MonitoringBuildingGroupProvider.monitoringItems
         if (monitoringBuildingGroupList.size > 0) openedGroups.add(monitoringBuildingGroupList[0])
+    }
+
+    fun addBuildingGroup(group: MonitoringBuildingGroup) {
+        _monitoringBuildingGroupList.add(group)
     }
 }
