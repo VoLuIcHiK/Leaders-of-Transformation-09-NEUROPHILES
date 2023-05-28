@@ -49,7 +49,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.relay.compose.BoxScopeInstanceImpl.align
+import com.tencent.yolov8ncnn.CheckLogic
 import com.tencent.yolov8ncnn.RoomStatistic
+import com.tencent.yolov8ncnn.RoomType
 import com.tencent.yolov8ncnn.Yolov8Ncnn
 import ru.mrmarvel.hellofigma.camerabutton.CameraButton
 import ru.mrmarvel.hellofigma.changeflatbutton.ChangeFlatButton
@@ -203,19 +205,6 @@ fun CameraScreen(
                 ).show()
                 viewModel.isStarted.value = !viewModel.isStarted.value
                 if (!viewModel.isStarted.value) {
-                    yolov8Ncnn?.closeCamera()
-                    viewModel.roomRealData = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
-                    Log.d("data", viewModel.roomRealData.toString())
-                    var roomStatistic = RoomStatistic()
-
-                    // Записываем среднюю уверенность
-                    // TODO: Добавить логику парного соответствия
-                    for ((key, value) in viewModel.roomRealData) {
-                        // TODO: Сделать выбор комнаты
-                        if (key in roomStatistic.kitchen.keys && value.size > 20)
-                            roomStatistic.kitchen[key] = value.sum() / value.size
-                    }
-                    Log.d("data", roomStatistic.kitchen.toString())
                     navigateToObserveResultScreen()
                 }
             }) {
@@ -277,6 +266,68 @@ fun CameraScreen(
             ) {
                 EndRoomButton(onItemClick = {
                     isRoomSelected.value = false
+
+                    // TODO: Изменять roomType по кнопке!
+                    var roomType = RoomType.KITCHEN;
+
+                    viewModel.roomRealData = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
+                    Log.d("data", viewModel.roomRealData.toString())
+                    var roomStatistic = RoomStatistic()
+
+                    // Записываем среднюю уверенность
+                    // TODO: Добавить логику парного соответствия
+                    for ((key, value) in viewModel.roomRealData) {
+                        // TODO: Сделать выбор комнаты
+                        when (roomType) {
+                            RoomType.KITCHEN -> {
+                                if (key in roomStatistic.kitchen.keys && value.size > 20)
+                                    roomStatistic.kitchen[key] = value.sum() / value.size
+                            }
+                            RoomType.LIVING -> {
+                                if (key in roomStatistic.living.keys && value.size > 20)
+                                    roomStatistic.living[key] = value.sum() / value.size
+                            }
+
+                            RoomType.HALL -> {
+                                if (key in roomStatistic.hall.keys && value.size > 20)
+                                    roomStatistic.hall[key] = value.sum() / value.size
+                            }
+
+                            RoomType.SANITARY -> {
+                                if (key in roomStatistic.sanitary.keys && value.size > 20)
+                                    roomStatistic.sanitary[key] = value.sum() / value.size
+                            }
+
+                        }
+                    }
+                    // TODO: Проверить логику
+                    val floor_classes: IntArray = intArrayOf(5, 6)
+                    val ceiling_classes: IntArray = intArrayOf(1, 2)
+                    val wall_classes: IntArray = intArrayOf(15, 17, 18)
+                    Log.d("data", roomStatistic.kitchen.toString())
+                    when(roomType){
+                        RoomType.KITCHEN -> {
+                            CheckLogic.compareAndResetClasses(roomStatistic.kitchen, floor_classes)
+                            CheckLogic.compareAndResetClasses(roomStatistic.kitchen, ceiling_classes)
+                            CheckLogic.compareAndResetClasses(roomStatistic.kitchen, wall_classes)
+                        }
+                        RoomType.LIVING -> {
+                            CheckLogic.compareAndResetClasses(roomStatistic.living, floor_classes)
+                            CheckLogic.compareAndResetClasses(roomStatistic.living, ceiling_classes)
+                            CheckLogic.compareAndResetClasses(roomStatistic.living, wall_classes)
+                        }
+                        RoomType.HALL -> {
+                            CheckLogic.compareAndResetClasses(roomStatistic.hall, floor_classes)
+                            CheckLogic.compareAndResetClasses(roomStatistic.hall, ceiling_classes)
+                            CheckLogic.compareAndResetClasses(roomStatistic.hall, wall_classes)
+                        }
+                        RoomType.SANITARY -> {
+                            CheckLogic.compareAndResetClasses(roomStatistic.sanitary, floor_classes)
+                            CheckLogic.compareAndResetClasses(roomStatistic.sanitary, ceiling_classes)
+                            CheckLogic.compareAndResetClasses(roomStatistic.sanitary, wall_classes)
+                        }
+                    }
+                    Log.d("data", roomStatistic.kitchen.toString())
                 })
             }
         }
