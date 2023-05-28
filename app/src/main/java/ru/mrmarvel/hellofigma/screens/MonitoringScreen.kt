@@ -34,6 +34,7 @@ import ru.mrmarvel.hellofigma.monitoringitembuildingsubitem.MonitoringItemBuildi
 import ru.mrmarvel.hellofigma.monthmonitoringlabel.MonthLabel
 import java.util.Calendar
 import kotlinx.coroutines.*
+import java.util.Date
 
 
 val startingDate: Calendar = Calendar.Builder().setDate(2023, 5, 22).build()
@@ -58,6 +59,18 @@ fun MonitoringScreen(
     LaunchedEffect(true) {
         launch {
             sharedViewModel.projectRepository.getAll()
+            for (project in sharedViewModel.projectRepository.projects.value) {
+                sharedViewModel.monitoringBuildingGroupList.add(
+                    MonitoringBuildingGroup(
+                        id = project.id,
+                        opened = false,
+                        coordinates = project.coordinates,
+                        date = Date(),
+                        items = listOf(),
+                        name = project.title
+                    )
+                )
+            }
         }
     }
 
@@ -93,7 +106,7 @@ fun MonitoringScreen(
         Surface(
             Modifier.padding(scaffoldPadding),
         ) {
-            Main()
+            Main(sharedViewModel)
         }
     }
 }

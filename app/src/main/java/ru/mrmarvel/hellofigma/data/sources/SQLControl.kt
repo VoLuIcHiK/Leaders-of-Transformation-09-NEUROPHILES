@@ -8,5 +8,5 @@ import retrofit2.http.Query
 
 interface SQLControl {
     @POST("/")
-    fun sql(@Query("sql") sql: String): Call<JSONObject>
+    suspend fun sql(@Query("sql") sql: String): Call<String>
 }

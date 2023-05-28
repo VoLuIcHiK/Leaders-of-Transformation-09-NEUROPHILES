@@ -38,4 +38,8 @@ class SharedViewModel: ViewModel() {
         monitoringBuildingGroupList += MonitoringBuildingGroupProvider.monitoringItems
         if (monitoringBuildingGroupList.size > 0) openedGroups.add(monitoringBuildingGroupList[0])
     }
+
+    fun addBuildingGroup(group: MonitoringBuildingGroup) {
+        _monitoringBuildingGroupList.add(group)
+    }
 }
