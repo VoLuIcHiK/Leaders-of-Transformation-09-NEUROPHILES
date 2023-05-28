@@ -64,7 +64,6 @@ import ru.mrmarvel.hellofigma.flatprogress.FlatProgress
 import ru.mrmarvel.hellofigma.roomprogressbutton.RoomProgressButton
 import ru.mrmarvel.hellofigma.util.findActivity
 
-
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(
@@ -130,7 +129,7 @@ fun CameraScreen(
     ) {
         // TODO: Посмотреть, нужно ли вызывать несколько раз. Спросить у Сереги как работает Surface
         var yolov8Ncnn = Yolov8Ncnn();
-        yolov8Ncnn?.loadModel(
+        yolov8Ncnn.loadModel(
             context.findActivity().assets,
             0,
             0
@@ -180,6 +179,7 @@ fun CameraScreen(
                                         }
 
                                         override fun surfaceDestroyed(p0: SurfaceHolder) {
+                                            Log.d("MYDEBUG", "Camera surface destroyed!")
                                             yolov8Ncnn?.closeCamera()
                                             yolov8Ncnn = null
                                         }
@@ -207,11 +207,7 @@ fun CameraScreen(
                 ).show()
                 viewModel.isStarted.value = !viewModel.isStarted.value
                 if (!viewModel.isStarted.value) {
-                    navigateToObserveResultScreen()
-                }
-                // TODO: Сделать нормальное получение
-                //var room =
-                if (!viewModel.isStarted.value) {
+                    // TODO: Сделать нормальное получение
                     var a = yolov8Ncnn.data
                     Log.d("data", a.toString())
                     var roomStatistic = RoomStatistic()
@@ -224,6 +220,8 @@ fun CameraScreen(
                             roomStatistic.kitchen[key] = value.sum() / value.size;
                     }
                     Log.d("data", roomStatistic.kitchen.toString())
+                    Log.d("data", viewModel.roomRealData.toString())
+                    navigateToObserveResultScreen()
                 }
             }) {
                 CameraButton()
