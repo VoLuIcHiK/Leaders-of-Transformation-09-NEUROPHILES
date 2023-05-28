@@ -5,7 +5,7 @@
 
 
 *Состав команды "НЕЙРОФИЛЫ"*   
-*Чиженко Леон (https://github.com/Leon200211) - Frontend-разработчик*    
+*Чиженко Леон (https://github.com/Leon200211) - Fullstack-разработчик*    
 *Сергей Куликов (https://github.com/MrMarvel) - Mobile/Backend-разработчик*  
 *Карпов Даниил (https://github.com/Free4ky) - ML-engineer*  
 *Валуева Анастасия (https://github.com/VoLuIcHiK) - Data Engineer/Designer*   
