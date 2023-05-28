@@ -49,7 +49,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.relay.compose.BoxScopeInstanceImpl.align
-import com.tencent.yolov8ncnn.RoomStatistic
+import com.tencent.yolov8ncnn.FlatStatistic
 import com.tencent.yolov8ncnn.Yolov8Ncnn
 import ru.mrmarvel.hellofigma.camerabutton.CameraButton
 import ru.mrmarvel.hellofigma.changeflatbutton.ChangeFlatButton
@@ -65,6 +65,7 @@ import ru.mrmarvel.hellofigma.roomprogressbutton.RoomProgressButton
 import ru.mrmarvel.hellofigma.util.findActivity
 import java.util.HashMap
 import java.util.Vector
+//import  ru.mrmarvel.hellofigma.util.processStatistic
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -110,6 +111,7 @@ fun CameraScreen(
     var previewView: PreviewView
 
     val currentFlatNumber = remember {viewModel.currentFlatNumber}
+    val currentRoomType = remember {viewModel.currentRoomType}
     val isFlatLocked = remember {viewModel.isFlatLocked}
     val isFlatChangeWindowShown = remember { mutableStateOf(false) }
     var yolov8Ncnn: Yolov8Ncnn? = null;
@@ -203,19 +205,20 @@ fun CameraScreen(
                 ).show()
                 viewModel.isStarted.value = !viewModel.isStarted.value
                 if (!viewModel.isStarted.value) {
-                    yolov8Ncnn?.closeCamera()
-                    viewModel.roomRealData = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
-                    Log.d("data", viewModel.roomRealData.toString())
-                    var roomStatistic = RoomStatistic()
-
-                    // Записываем среднюю уверенность
-                    // TODO: Добавить логику парного соответствия
-                    for ((key, value) in viewModel.roomRealData) {
-                        // TODO: Сделать выбор комнаты
-                        if (key in roomStatistic.kitchen.keys && value.size > 20)
-                            roomStatistic.kitchen[key] = value.sum() / value.size
-                    }
-                    Log.d("data", roomStatistic.kitchen.toString())
+//                    yolov8Ncnn?.closeCamera()
+//                    viewModel.roomRealData = yolov8Ncnn?.data ?: HashMap<Int, Vector<Float>>()
+//                    Log.d("data", viewModel.roomRealData.toString())
+//                    var flatStatistic = FlatStatistic()
+//
+//                    // Записываем среднюю уверенность
+//                    // TODO: Добавить логику парного соответствия
+//                    for ((key, value) in viewModel.roomRealData) {
+//                        // TODO: Сделать выбор комнаты
+//                        if (key in flatStatistic.kitchen.keys && value.size > 20)
+//                            flatStatistic.kitchen[key] = value.sum() / value.size
+//                    }
+//                    Log.d("data", flatStatistic.kitchen.toString())
+//                    processStatistic()
                     navigateToObserveResultScreen()
                 }
             }) {
@@ -265,8 +268,8 @@ fun CameraScreen(
                 FlatProgress(Modifier.padding(start=8.dp),"0%")
             }
         }
-        val isRoomSelected = remember {viewModel.isRoomSelected}
-        AnimatedVisibility(visible = isRoomSelected.value,
+        val currentRoomType = remember {viewModel.currentRoomType}
+        AnimatedVisibility(visible = currentRoomType.value != "",
             enter = fadeIn(),
             exit = fadeOut()
         ) {
@@ -276,13 +279,13 @@ fun CameraScreen(
                 contentAlignment = Alignment.BottomEnd
             ) {
                 EndRoomButton(onItemClick = {
-                    isRoomSelected.value = false
+                    currentRoomType.value = ""
                 })
             }
         }
         val roomsNames = listOf("Санузел", "Коридор", "Жилая", "Кухня")
         AnimatedVisibility(
-            visible = !remember { viewModel.isRoomSelected }.value,
+            visible = remember { viewModel.currentRoomType}.value == "",
             enter = expandVertically(expandFrom = Alignment.Top),
             exit = shrinkVertically(shrinkTowards = Alignment.Top),
         ) {
@@ -300,7 +303,7 @@ fun CameraScreen(
                 ) {
                     items(roomsNames.size) { i ->
                         RoomProgressButton(roomName = roomsNames[i], progressText = "${(i+1) * 25}%", onItemClick = {
-                            viewModel.isRoomSelected.value = true
+                            viewModel.currentRoomType.value = roomsNames[i]
                         })
                     }
                 }

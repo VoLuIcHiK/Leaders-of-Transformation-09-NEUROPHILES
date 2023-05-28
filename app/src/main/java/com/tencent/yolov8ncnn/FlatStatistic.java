@@ -2,14 +2,9 @@ package com.tencent.yolov8ncnn;
 
 import java.util.HashMap;
 
-enum RoomType{
-    KITCHEN,
-    LIVING,
-    SANITARY,
-    HALL
-}
 
-public class RoomStatistic {
+
+public class FlatStatistic {
     public HashMap<Integer, Float> kitchen = new HashMap<Integer, Float>(){{
         put(1, 0.f);
         put(2, 0.f);
@@ -62,7 +57,7 @@ public class RoomStatistic {
         put(18, 0.f);
     }};
 
-    public HashMap<Integer, Float> Sanitary = new HashMap<Integer, Float>(){{
+    public HashMap<Integer, Float> sanitary = new HashMap<Integer, Float>(){{
         put(0, 0.f);
         put(1, 0.f);
         put(2, 0.f);
