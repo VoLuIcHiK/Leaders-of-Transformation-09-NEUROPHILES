@@ -1,6 +1,10 @@
 package ru.mrmarvel.hellofigma.data
 
+import android.location.Location
+import android.location.LocationListener
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import ru.mrmarvel.hellofigma.data.models.MonitoringBuildingGroup
@@ -34,6 +38,14 @@ class SharedViewModel: ViewModel() {
     val monitoringBuildingGroupList: SnapshotStateList<MonitoringBuildingGroup> = mutableStateListOf()
     val openedGroups: SnapshotStateList<MonitoringBuildingGroup> = mutableStateListOf()
     val projectRepository = ProjectRepository(ProjectSource())
+
+    val selectedProjectName = mutableStateOf("ЖК Остафьево")
+    val selectedBuildingName = mutableStateOf("Корпус 2")
+    val selectedSectionNumber = mutableStateOf("3")
+    val selectedFloorNumber = mutableStateOf("1")
+
+    val currentLocation: MutableState<Location?> = mutableStateOf(null)
+
     init {
         _monitoringBuildingGroupList += MonitoringBuildingGroupProvider.monitoringItems
         if (_monitoringBuildingGroupList.size > 0) openedGroups.add(_monitoringBuildingGroupList[0])

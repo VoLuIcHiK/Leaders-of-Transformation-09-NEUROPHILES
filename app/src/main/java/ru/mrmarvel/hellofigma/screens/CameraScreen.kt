@@ -100,7 +100,7 @@ fun CameraScreen(
     }
     if (!permissionState.allPermissionsGranted){
         permissionState.revokedPermissions.forEach {
-            Toast.makeText(context, "Нужно разрешение ${it.permission}!", Toast.LENGTH_LONG).show()
+            // Toast.makeText(context, "Нужно разрешение ${it.permission}!", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -200,11 +200,11 @@ fun CameraScreen(
             contentAlignment = Alignment.BottomCenter,
         ) {
             IconButton(onClick = {
-                Toast.makeText(
-                    context,
-                    "Pressed",
-                    Toast.LENGTH_SHORT
-                ).show()
+                // Toast.makeText(
+                //     context,
+                //     "Pressed",
+                //     Toast.LENGTH_SHORT
+                // ).show()
                 viewModel.isStarted.value = !viewModel.isStarted.value
                 Log.d("model", (yolov8Ncnn == null).toString())
                 yolov8Ncnn?.changeState()

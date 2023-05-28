@@ -47,10 +47,10 @@ fun ObserveResultScreen(
         topBar = {
             CamoletAppBar(Modifier.fillMaxWidth(),
                 onBurgerClick = {
-                    Toast.makeText(context, "Открыть меню!", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(context, "Открыть меню!", Toast.LENGTH_SHORT).show()
                 },
                 onProfileClick = {
-                    Toast.makeText(context, "Открыть профиль!", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(context, "Открыть профиль!", Toast.LENGTH_SHORT).show()
                 },
                 appBarText = "РЕЗУЛЬТАТ ОБХОДА"
             )
@@ -66,7 +66,7 @@ fun ObserveResultScreen(
                 Blue1lineButton(Modifier,
                     buttonText = "Скачать “шахматки”",
                     onItemClicked = {
-                        Toast.makeText(context, "Создать видео!", Toast.LENGTH_SHORT).show()
+                        // Toast.makeText(context, "Создать видео!", Toast.LENGTH_SHORT).show()
                     }
                 )
             }

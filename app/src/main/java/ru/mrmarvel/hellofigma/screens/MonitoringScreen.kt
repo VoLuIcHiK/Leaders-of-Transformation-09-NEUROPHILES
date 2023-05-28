@@ -54,7 +54,8 @@ fun getRussianMonthName(monthNum: Int): String {
 @Composable
 fun MonitoringScreen(
     sharedViewModel: SharedViewModel = SharedViewModel(),
-    navigateToCameraScreen: () -> Unit
+    navigateToCameraScreen: () -> Unit,
+    navigateToObserverStartScreen: () -> Unit = {}
 ) {
     LaunchedEffect(true) {
         launch {
