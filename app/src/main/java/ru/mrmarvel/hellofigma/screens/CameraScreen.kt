@@ -34,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,6 +54,7 @@ import com.tencent.yolov8ncnn.CheckLogic
 import com.tencent.yolov8ncnn.RoomStatistic
 import com.tencent.yolov8ncnn.RoomType
 import com.tencent.yolov8ncnn.Yolov8Ncnn
+import kotlinx.coroutines.launch
 import ru.mrmarvel.hellofigma.camerabutton.CameraButton
 import ru.mrmarvel.hellofigma.changeflatbutton.ChangeFlatButton
 import ru.mrmarvel.hellofigma.changeroombutton.ChangeRoomButton
@@ -65,6 +67,7 @@ import ru.mrmarvel.hellofigma.flatlock.IsLocked
 import ru.mrmarvel.hellofigma.flatprogress.FlatProgress
 import ru.mrmarvel.hellofigma.roomprogressbutton.RoomProgressButton
 import ru.mrmarvel.hellofigma.util.findActivity
+import ru.mrmarvel.hellofigma.util.createSheet
 import java.util.HashMap
 import java.util.Vector
 
@@ -79,11 +82,15 @@ fun CameraScreen(
     val permissions = mutableListOf(
         Manifest.permission.CAMERA,
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
     )
+
     permissions += if (Build.VERSION.SDK_INT <= 28){
         listOf(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
         )
     }else {
         listOf(Manifest.permission.CAMERA)
@@ -143,10 +150,11 @@ fun CameraScreen(
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
-                    Box(Modifier
-                        // FORCE FILL
-                        .fillMaxWidth()
-                        .width(screenWidth * 0.97f)) {
+                    Box(
+                        Modifier
+                            // FORCE FILL
+                            .fillMaxWidth()
+                            .width(screenWidth * 0.97f)) {
                         AndroidView(
                             factory = {
                                 // previewView = PreviewView(it)
@@ -264,7 +272,11 @@ fun CameraScreen(
                 .padding(32.dp),
                 contentAlignment = Alignment.BottomEnd
             ) {
+                val coroutineScope = rememberCoroutineScope()
                 EndRoomButton(onItemClick = {
+
+                    coroutineScope.launch { createSheet(context, 5,5) }
+
                     isRoomSelected.value = false
 
                     // TODO: Изменять roomType по кнопке!
